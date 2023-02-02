@@ -12,17 +12,17 @@ const Home: React.FC = () => {
     await addTodo(task)
   }
 
-  const updateStatus = async (id: string, status: number) => {
-    /**
-     * Todo
-     */
-  }
+  // const updateStatus = async (id: string, status: number) => {
+  //   /**
+  //    * Todo
+  //    */
+  // }
 
-  const deleteTodo = async (id: string) => {
-    /**
-     * Todo
-     */
-  }
+  // const deleteTodo = async (id: string) => {
+  //   /**
+  //    * Todo
+  //    */
+  // }
 
 
 
