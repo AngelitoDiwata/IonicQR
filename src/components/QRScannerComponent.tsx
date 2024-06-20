@@ -6,7 +6,9 @@ const QRScannerComponent: React.FC = () => {
     const [scanning, setScanning] = useState(false);
     const [scanResult, setScanResult] = useState<string | null>(null);
 
+
     useEffect(() => {
+        startScan();
         return () => {
             BarcodeScanner.stopScan();
             BarcodeScanner.showBackground();
@@ -18,9 +20,12 @@ const QRScannerComponent: React.FC = () => {
 
         await BarcodeScanner.checkPermission({ force: true });
 
-        BarcodeScanner.hideBackground();
+        //BarcodeScanner.hideBackground();
 
-        const result = await BarcodeScanner.startScan();
+        const result = await BarcodeScanner.startScan({
+            targetedFormats: ['QR_CODE'],
+            cameraDirection: 'back'  // Use the back camera
+        });
         if (result.hasContent) {
             setScanResult(result.content);
             alert(`Scanned text: ${result.content}`);

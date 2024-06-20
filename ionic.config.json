@@ -1,7 +1,11 @@
 {
-  "name": "myApp",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "react"
+    "name": "myApp",
+    "integrations": {
+        "capacitor": {}
+    },
+    "type": "react",
+    "ssl": {
+        "cert": ".ionic/ssl/cert.pem",
+        "key": ".ionic/ssl/key.pem"
+    }
 }

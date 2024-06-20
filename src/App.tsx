@@ -21,7 +21,7 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import QRScannerComponent from './components/QRScannerComponent';
+import BarcodeScannerComponent from './components/BarcodeScannerComponent';
 
 setupIonicReact();
 
@@ -35,10 +35,6 @@ const App: React.FC = () => (
         <Route exact path="/">
           <Redirect to="/home" />
         </Route>
-      </IonRouterOutlet>
-      <IonRouterOutlet>
-        <Route path="/scan" component={QRScannerComponent} exact={true} />
-        <Route exact path="/" render={() => <Redirect to="/scan" />} />
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>
