@@ -9,3 +9,8 @@
     transform: translate(-50%, -50%);
     width: 70vw;
 }
+
+body.scanner-active {
+    --background: transparent;
+    --ion-background-color: transparent;
+}

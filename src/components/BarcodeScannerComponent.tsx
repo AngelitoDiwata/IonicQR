@@ -25,7 +25,7 @@ const BarcodeScannerComponent = () => {
         if (status.granted) {
             setScanning(true);
             document.body.classList.add('scanner-active');
-            //BarcodeScanner.hideBackground();
+            BarcodeScanner.hideBackground();
             const result = await BarcodeScanner.startScan({ targetedFormats: ['QR_CODE'] });
             if (result.hasContent) {
                 console.log(result.content);
