@@ -28,7 +28,11 @@ const Home: React.FC = () => {
     setHideBg(true)
     // make background of WebView transparent
 
-    const result = await BarcodeScanner.startScan() // start scanning and wait for a result
+    const result = await BarcodeScanner.startScan(
+      {
+        cameraDirection: "back"
+      }
+    ) // start scanning and wait for a result
 
     // if the result has content
     if (result.hasContent) {
