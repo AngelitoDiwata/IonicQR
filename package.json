@@ -3,12 +3,16 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "@capacitor-community/barcode-scanner": "^4.0.1",
+    "@capacitor-mlkit/barcode-scanning": "^6.1.0",
+    "@capacitor/android": "^6.1.0",
     "@capacitor/app": "4.1.1",
-    "@capacitor/core": "4.6.2",
+    "@capacitor/core": "^6.1.0",
     "@capacitor/haptics": "4.1.0",
     "@capacitor/ios": "4.6.2",
     "@capacitor/keyboard": "4.1.1",
     "@capacitor/status-bar": "4.1.1",
+    "@ionic-native/qr-scanner": "^5.36.0",
     "@ionic/react": "^6.0.0",
     "@ionic/react-router": "^6.0.0",
     "@ionic/storage": "^3.0.6",
@@ -21,6 +25,7 @@
     "@types/react-dom": "^18.0.6",
     "@types/react-router": "^5.1.11",
     "@types/react-router-dom": "^5.1.7",
+    "cordova-plugin-qrscanner": "^3.0.1",
     "history": "^4.9.0",
     "ionicons": "^6.0.3",
     "react": "^18.2.0",
@@ -71,7 +76,7 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "4.6.2"
+    "@capacitor/cli": "^4.6.2"
   },
   "description": "An Ionic project"
 }
