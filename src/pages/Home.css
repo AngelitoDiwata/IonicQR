@@ -12,8 +12,8 @@
 
 body>div:nth-child(2) {
     position: relative !important;
-    width: 64% !important;
-    height: 64% !important;
+    width: 74% !important;
+    height: 40% !important;
     aspect-ratio: 1 / 1 !important;
     left: 50% !important;
     top: 50% !important;
