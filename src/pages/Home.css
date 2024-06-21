@@ -10,14 +10,13 @@
     opacity: 0;
 }
 
-.scan-box {
-    border: 2px solid #fff;
-    box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.5);
-    display: block;
-    left: 50%;
-    height: 70vw;
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 70vw;
+body>div:nth-child(2) {
+    position: relative !important;
+    width: 64% !important;
+    height: 40% !important;
+    aspect-ratio: 1 / 1 !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    border: solid !important;
 }
