@@ -30,7 +30,7 @@ const Home: React.FC = () => {
 
     const result = await BarcodeScanner.startScan(
       {
-        cameraDirection: "back"
+        cameraDirection: 'back'
       }
     ) // start scanning and wait for a result
 
