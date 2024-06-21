@@ -21,15 +21,27 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import QRScannerComponent from './components/QRScannerComponent';
 
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
+
+const App: React.FC = () => {
+
+  const handleScanSuccess = (result: string) => {
+    console.log('Scanned QR Code:', result);
+    alert(`Scanned QR Code: ${result}`);
+  };
+
+  const handleScanError = (error: any) => {
+    console.error('QR Code Scan Error:', error);
+  };
+
+  return <IonApp>
     <IonReactRouter>
       <IonRouterOutlet>
         <Route exact path="/home">
-          <Home />
+          <QRScannerComponent onScanSuccess={handleScanSuccess} onScanError={handleScanError} />
         </Route>
         <Route exact path="/">
           <Redirect to="/home" />
@@ -37,6 +49,6 @@ const App: React.FC = () => (
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>
-);
+};
 
 export default App;

@@ -1,61 +1,49 @@
-import React, { useEffect, useState } from 'react';
-import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
+// src/components/QrScannerComponent.tsx
+
+import React, { useEffect, useRef, useState } from 'react';
+import { BrowserMultiFormatReader } from '@zxing/browser';
 import { IonButton, IonContent, IonPage } from '@ionic/react';
 
-const QRScannerComponent: React.FC = () => {
-    const [scanning, setScanning] = useState(false);
-    const [scanResult, setScanResult] = useState<string | null>(null);
+const QRScannerComponent: React.FC<{ onScanSuccess: (result: string) => void, onScanError?: (error: any) => void }> = ({ onScanSuccess, onScanError }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [scanner, setScanner] = useState<BrowserMultiFormatReader | null>(null);
 
+  useEffect(() => {
+    const codeReader: any = new BrowserMultiFormatReader();
+    setScanner(codeReader);
 
-    useEffect(() => {
-        startScan();
-        return () => {
-            BarcodeScanner.stopScan();
-            BarcodeScanner.showBackground();
-        };
-    }, []);
+    return () => {
+      codeReader.reset();
+      codeReader.stopContinuousDecode();
+    };
+  }, []);
 
-    const startScan = async () => {
-        setScanning(true);
-
-        await BarcodeScanner.checkPermission({ force: true });
-
-        //BarcodeScanner.hideBackground();
-
-        const result = await BarcodeScanner.startScan({
-            targetedFormats: ['QR_CODE'],
-            cameraDirection: 'back'  // Use the back camera
-        });
-        if (result.hasContent) {
-            setScanResult(result.content);
-            alert(`Scanned text: ${result.content}`);
+  const startScan = () => {
+    if (videoRef.current) {
+      scanner?.decodeFromVideoDevice(undefined, videoRef.current, (result, err) => {
+        if (result) {
+          onScanSuccess(result.getText());
         }
+        if (err) {
+          console.error(err);
+          if (onScanError) {
+            onScanError(err);
+          }
+        }
+      });
+    }
+  };
 
-        setScanning(false);
-        BarcodeScanner.showBackground();
-    };
-
-    const stopScan = () => {
-        BarcodeScanner.stopScan();
-        BarcodeScanner.showBackground();
-        setScanning(false);
-    };
-
-    return (
-        <IonPage>
-            <IonContent className="ion-padding">
-                {scanResult && <div>Scanned result: {scanResult}</div>}
-                <IonButton onClick={startScan} disabled={scanning}>
-                    Start Scanning
-                </IonButton>
-                {scanning && (
-                    <IonButton onClick={stopScan}>
-                        Stop Scanning
-                    </IonButton>
-                )}
-            </IonContent>
-        </IonPage>
-    );
+  return (
+    <IonPage>
+      <IonContent>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+          <video ref={videoRef} style={{ width: '100%' }} />
+        </div>
+        <IonButton onClick={startScan}>Start Scan</IonButton>
+      </IonContent>
+    </IonPage>
+  );
 };
 
 export default QRScannerComponent;
