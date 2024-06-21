@@ -33,6 +33,8 @@ const Home: React.FC = () => {
       cameraDirection: 'back'  // Use the back camera
     }) // start scanning and wait for a result
 
+    console.log(result)
+
     // if the result has content
     if (result.hasContent) {
       stopScan()
