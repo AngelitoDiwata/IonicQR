@@ -13,19 +13,20 @@ const QRScannerComponent: React.FC<{ onScanSuccess: (result: string) => void, on
   useEffect(() => {
     const codeReader: any = new BrowserMultiFormatReader();
     setScanner(codeReader);
+    startScan();
     return () => {
       // codeReader.reset();
       // codeReader.stopContinuousDecode();
     };
   }, []);
 
+
   const startScan = () => {
     if (videoRef.current) {
-      scanner?.decodeFromVideoDevice(undefined, videoRef.current, (result, err) => {
+      scanner?.decodeFromVideoDevice(undefined, videoRef.current, async (result, err) => {
         if (result) {
-          addData(result.getText()).then(() => {
-            onScanSuccess(result.getText());
-          })
+          await addData(result.getText())
+          onScanSuccess(result.getText());
         }
         if (err) {
           if (onScanError) {
