@@ -21,6 +21,7 @@ const QRScannerComponent: React.FC<{ onScanSuccess: (result: string) => void, on
   }, []);
 
 
+
   const startScan = () => {
     if (videoRef.current) {
       scanner?.decodeFromVideoDevice(undefined, videoRef.current, async (result, err) => {
