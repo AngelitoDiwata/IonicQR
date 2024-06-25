@@ -1,0 +1,6 @@
+#root>ion-app>ion-router-outlet>div>ion-content>div>video {
+    width: 85% !important;
+    height: auto !important;
+    border: dashed !important;
+    border-radius: 5%;
+}

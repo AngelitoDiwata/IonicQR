@@ -2,19 +2,20 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { BrowserMultiFormatReader } from '@zxing/browser';
-import { IonButton, IonContent, IonPage } from '@ionic/react';
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonItem, IonLabel, IonList, IonPage } from '@ionic/react';
+import { DataItem, useStorage } from '../hooks/useStorage';
 
 const QRScannerComponent: React.FC<{ onScanSuccess: (result: string) => void, onScanError?: (error: any) => void }> = ({ onScanSuccess, onScanError }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [scanner, setScanner] = useState<BrowserMultiFormatReader | null>(null);
+  const { data, addData } = useStorage();
 
   useEffect(() => {
     const codeReader: any = new BrowserMultiFormatReader();
     setScanner(codeReader);
-
     return () => {
-      codeReader.reset();
-      codeReader.stopContinuousDecode();
+      // codeReader.reset();
+      // codeReader.stopContinuousDecode();
     };
   }, []);
 
@@ -22,10 +23,11 @@ const QRScannerComponent: React.FC<{ onScanSuccess: (result: string) => void, on
     if (videoRef.current) {
       scanner?.decodeFromVideoDevice(undefined, videoRef.current, (result, err) => {
         if (result) {
-          onScanSuccess(result.getText());
+          addData(result.getText()).then(() => {
+            onScanSuccess(result.getText());
+          })
         }
         if (err) {
-          console.error(err);
           if (onScanError) {
             onScanError(err);
           }
@@ -37,10 +39,29 @@ const QRScannerComponent: React.FC<{ onScanSuccess: (result: string) => void, on
   return (
     <IonPage>
       <IonContent>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-          <video ref={videoRef} style={{ width: '100%' }} />
-        </div>
-        <IonButton onClick={startScan}>Start Scan</IonButton>
+        <IonCard>
+          <IonCardHeader>
+            <IonCardTitle>Basic Count</IonCardTitle>
+            <IonCardSubtitle><IonButton onClick={startScan}>Start Scan</IonButton></IonCardSubtitle>
+          </IonCardHeader>
+          <IonCardContent>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+              <video ref={videoRef} style={{ width: '100%' }} />
+            </div>
+          </IonCardContent>
+        </IonCard>
+
+
+        <IonList>
+          {data.map((res) =>
+            <IonItem>
+              <IonLabel>{res.data}</IonLabel>
+            </IonItem>
+          )}
+
+        </IonList>
+
+
       </IonContent>
     </IonPage>
   );

@@ -1,48 +1,47 @@
 import { useEffect, useState } from "react";
 import { Storage } from '@ionic/storage';
 
-const TODOS_KEY = 'my-todos'
+const DATA_KEY = 'my-data'
 
-export interface TodoItem {
-    task: string;
+export interface DataItem {
+    data: string;
     created: number;
-    status: number;
     id: string;
 }
 
 export function useStorage() {
     const [store, setStore] = useState<Storage>();
-    const [todos, setTodos] = useState<TodoItem[]>([]);
+    const [data, setData] = useState<DataItem[]>([]);
+
     useEffect(() => {
         const initStorage = async () => {
             const newStore = new Storage({
-                name: 'geloDB',
+                name: 'uniDB',
             })
 
             const store = await newStore.create();
             setStore(store)
 
-            const storedTodos = await store.get(TODOS_KEY) || [];
-            setTodos(storedTodos)
-            
+            const storedTodos = await store.get(DATA_KEY) || [];
+            setData(storedTodos)
+
         }
         initStorage();
     }, [])
 
-    const addTodo = async (task: string) => {
-        const newTodo = {
-            task,
+    const addData = async (initData: string) => {
+        const newData = {
+            data: initData,
             created: new Date().getTime(),
-            status: 0,
-            id: ''+new Date().getTime()
+            id: crypto.randomUUID()
         }
-        const updatedTodos = [...todos, newTodo];
-        setTodos(updatedTodos)
-        store?.set(TODOS_KEY, updatedTodos)
+        const updatedData = [...data, newData];
+        setData(updatedData)
+        store?.set(DATA_KEY, updatedData)
     }
 
     return {
-        todos,
-        addTodo
+        data,
+        addData
     }
 }

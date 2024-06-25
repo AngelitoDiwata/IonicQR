@@ -33,7 +33,7 @@ const App: React.FC = () => {
   };
 
   const handleScanError = (error: any) => {
-    console.error('QR Code Scan Error:', error);
+
   };
 
   return <IonApp>
