@@ -31,7 +31,6 @@ const QRScannerComponent: React.FC<{ onScanSuccess: (result: string) => void, on
   useEffect(() => {
     const codeReader: any = new BrowserMultiFormatReader();
     setScanner(codeReader);
-    startScan();
     return () => {
       // codeReader.reset();
       // codeReader.stopContinuousDecode();
