@@ -32,10 +32,10 @@ const QRScannerComponent: React.FC<{ onScanSuccess: (result: string) => void, on
     const codeReader: any = new BrowserMultiFormatReader();
     setScanner(codeReader);
     return () => {
-      // codeReader.reset();
-      // codeReader.stopContinuousDecode();
+      // scanner.reset();
+      // scanner.stopContinuousDecode();
     };
-  }, []);
+  }, [data]);
 
 
 
