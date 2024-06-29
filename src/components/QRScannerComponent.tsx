@@ -15,17 +15,12 @@ const QRScannerComponent: React.FC<{ onScanSuccess: (result: string) => void, on
   const startScan = async () => {
     if (videoRef.current && scanner) {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        //const videoTrack = stream.getVideoTracks()[0];
         scanner.decodeOnceFromVideoElement(videoRef.current).then((result) => {
           if (result) {
             addData(result.getText());
             onScanSuccess(result.getText());
           }
         });
-
-
-        //videoTrack.stop();
       } catch (error) {
         if (onScanError) {
           onScanError(error);
