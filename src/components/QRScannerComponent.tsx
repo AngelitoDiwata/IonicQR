@@ -8,16 +8,6 @@ const QRScannerComponent: React.FC<{ onScanSuccess: (result: string) => void, on
   const [scanner, setScanner] = useState<BrowserMultiFormatReader | null>(null);
   const { data, addData } = useStorage();
 
-  useEffect(() => {
-    const codeReader: any = new BrowserMultiFormatReader();
-    setScanner(codeReader);
-    console.log(data)
-    startScan();
-    return () => {
-      // codeReader.reset();
-      // codeReader.stopContinuousDecode();
-    };
-  }, []);
 
   const startScan = () => {
     if (videoRef.current) {
@@ -35,6 +25,17 @@ const QRScannerComponent: React.FC<{ onScanSuccess: (result: string) => void, on
       });
     }
   };
+
+  useEffect(() => {
+    const codeReader: any = new BrowserMultiFormatReader();
+    setScanner(codeReader);
+    console.log(data)
+    startScan();
+    return () => {
+      // codeReader.reset();
+      // codeReader.stopContinuousDecode();
+    };
+  }, []);
 
   return (
     <IonPage placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
