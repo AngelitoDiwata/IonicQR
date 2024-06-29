@@ -38,7 +38,7 @@ const App: React.FC = () => {
 
   return <IonApp>
     <IonReactRouter>
-      <IonRouterOutlet>
+      <IonRouterOutlet placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
         <Route exact path="/home">
           <QRScannerComponent onScanSuccess={handleScanSuccess} onScanError={handleScanError} />
         </Route>

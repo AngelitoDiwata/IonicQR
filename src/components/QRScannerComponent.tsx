@@ -12,19 +12,23 @@ const QRScannerComponent: React.FC<{ onScanSuccess: (result: string) => void, on
 
 
 
-  const startScan = () => {
-    if (videoRef.current) {
-      scanner?.decodeFromVideoDevice(undefined, videoRef.current, async (result, err) => {
-        if (result) {
-          await addData(result.getText())
-          onScanSuccess(result.getText());
-        }
-        if (err) {
-          if (onScanError) {
-            onScanError(err);
+  const startScan = async () => {
+    if (videoRef.current && scanner) {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const videoTrack = stream.getVideoTracks()[0];
+        const decodedResult = await scanner.decodeOnceFromVideoElement(videoRef.current).then((result) => {
+          if (result) {
+            addData(result.getText());
+            onScanSuccess(result.getText());
           }
+        });
+        videoTrack.stop();
+      } catch (error) {
+        if (onScanError) {
+          onScanError(error);
         }
-      });
+      }
     }
   };
 
@@ -40,14 +44,14 @@ const QRScannerComponent: React.FC<{ onScanSuccess: (result: string) => void, on
 
 
   return (
-    <IonPage>
-      <IonContent>
-        <IonCard>
-          <IonCardHeader>
-            <IonCardTitle>Basic Count</IonCardTitle>
-            <IonCardSubtitle><IonButton onClick={startScan}>Start Scan</IonButton></IonCardSubtitle>
+    <IonPage placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+      <IonContent placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+        <IonCard placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          <IonCardHeader placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <IonCardTitle placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Basic Count</IonCardTitle>
+            <IonCardSubtitle placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}><IonButton onClick={startScan} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Start Scan</IonButton></IonCardSubtitle>
           </IonCardHeader>
-          <IonCardContent>
+          <IonCardContent placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
               <video ref={videoRef} style={{ width: '100%' }} />
             </div>
@@ -55,10 +59,10 @@ const QRScannerComponent: React.FC<{ onScanSuccess: (result: string) => void, on
         </IonCard>
 
 
-        <IonList>
+        <IonList placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           {data.map((res) =>
-            <IonItem>
-              <IonLabel>{res.data}</IonLabel>
+            <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+              <IonLabel placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{res.data}</IonLabel>
             </IonItem>
           )}
 
