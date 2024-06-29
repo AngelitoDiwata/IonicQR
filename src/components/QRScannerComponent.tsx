@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { BrowserMultiFormatReader } from '@zxing/browser';
-import { IonButton, IonContent, IonPage } from '@ionic/react';
+import { IonContent, IonPage } from '@ionic/react';
 import { useStorage } from '../hooks/useStorage';
 
 const QRScannerComponent: React.FC<{ onScanSuccess: (result: string) => void, onScanError?: (error: any) => void }> = ({ onScanSuccess, onScanError }) => {
@@ -17,7 +17,7 @@ const QRScannerComponent: React.FC<{ onScanSuccess: (result: string) => void, on
       // codeReader.reset();
       // codeReader.stopContinuousDecode();
     };
-  }, [data]);
+  }, []);
 
   const startScan = () => {
     if (videoRef.current) {
