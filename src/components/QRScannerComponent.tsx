@@ -1,8 +1,6 @@
-// src/components/QrScannerComponent.tsx
-
 import React, { useEffect, useRef, useState } from 'react';
 import { BrowserMultiFormatReader } from '@zxing/browser';
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonItem, IonLabel, IonList, IonPage } from '@ionic/react';
+import { IonButton, IonContent, IonPage } from '@ionic/react';
 import { useStorage } from '../hooks/useStorage';
 
 const QRScannerComponent: React.FC<{ onScanSuccess: (result: string) => void, onScanError?: (error: any) => void }> = ({ onScanSuccess, onScanError }) => {
@@ -10,62 +8,40 @@ const QRScannerComponent: React.FC<{ onScanSuccess: (result: string) => void, on
   const [scanner, setScanner] = useState<BrowserMultiFormatReader | null>(null);
   const { data, addData } = useStorage();
 
-
-
-  const startScan = async () => {
-    if (videoRef.current && scanner) {
-      try {
-        scanner.decodeOnceFromVideoElement(videoRef.current).then((result) => {
-          if (result) {
-            addData(result.getText());
-            onScanSuccess(result.getText());
-          }
-        });
-      } catch (error) {
-        if (onScanError) {
-          onScanError(error);
-        }
-      }
-    }
-  };
-
   useEffect(() => {
     const codeReader: any = new BrowserMultiFormatReader();
     setScanner(codeReader);
+    console.log(data)
+    startScan();
     return () => {
-      // scanner.reset();
-      // scanner.stopContinuousDecode();
+      // codeReader.reset();
+      // codeReader.stopContinuousDecode();
     };
   }, [data]);
 
-
+  const startScan = () => {
+    if (videoRef.current) {
+      scanner?.decodeFromVideoDevice(undefined, videoRef.current, (result, err) => {
+        if (result) {
+          onScanSuccess(result.getText());
+          addData(result.getText());
+        }
+        if (err) {
+          console.error(err);
+          if (onScanError) {
+            onScanError(err);
+          }
+        }
+      });
+    }
+  };
 
   return (
     <IonPage placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
       <IonContent placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-        <IonCard placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-          <IonCardHeader placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-            <IonCardTitle placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Basic Count</IonCardTitle>
-            <IonCardSubtitle placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}><IonButton onClick={startScan} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Start Scan</IonButton></IonCardSubtitle>
-          </IonCardHeader>
-          <IonCardContent placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-              <video ref={videoRef} style={{ width: '100%' }} />
-            </div>
-          </IonCardContent>
-        </IonCard>
-
-
-        <IonList placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-          {data.map((res) =>
-            <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-              <IonLabel placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{res.data}</IonLabel>
-            </IonItem>
-          )}
-
-        </IonList>
-
-
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+          <video ref={videoRef} style={{ width: '100%' }} />
+        </div>
       </IonContent>
     </IonPage>
   );
