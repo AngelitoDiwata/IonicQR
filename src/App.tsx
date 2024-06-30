@@ -27,20 +27,12 @@ setupIonicReact();
 
 const App: React.FC = () => {
 
-  const handleScanSuccess = (result: string) => {
-    console.log('Scanned QR Code:', result);
-    alert(`Scanned QR Code: ${result}`);
-  };
-
-  const handleScanError = (error: any) => {
-
-  };
 
   return <IonApp>
     <IonReactRouter>
       <IonRouterOutlet placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
         <Route exact path="/home">
-          <QRScannerComponent onScanSuccess={handleScanSuccess} onScanError={handleScanError} />
+          <QRScannerComponent />
         </Route>
         <Route exact path="/">
           <Redirect to="/home" />
