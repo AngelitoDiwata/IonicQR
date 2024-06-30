@@ -29,11 +29,6 @@ export function useStorage() {
         initStorage();
     }, [])
 
-    const getData = async () => {
-        const storedTodos = await store?.get(DATA_KEY) || [];
-        return storedTodos
-    }
-
     const addData = async (initData: string) => {
         if (data.length > 0) {
             const newData = {

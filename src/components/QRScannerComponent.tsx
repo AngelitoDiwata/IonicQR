@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { BrowserMultiFormatReader } from '@zxing/browser';
 import { IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonItem, IonLabel, IonList, IonPage } from '@ionic/react';
 import { useStorage } from '../hooks/useStorage';
