@@ -24,7 +24,7 @@ const QRScannerComponent: React.FC<any> = () => {
       // codeReader.reset();
       // codeReader.stopContinuousDecode();
     };
-  }, []);
+  });
 
   return (
     <IonPage placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
