@@ -1,11 +1,12 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { BrowserMultiFormatReader } from '@zxing/browser';
 import { IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonItem, IonLabel, IonList, IonPage } from '@ionic/react';
 import { useStorage } from '../hooks/useStorage';
 
 const QRScannerComponent: React.FC<any> = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const { data, addData } = useStorage();
+  const [data, setData] = useState([]);
+  const { getData, addData } = useStorage();
 
 
   useEffect(() => {
@@ -14,9 +15,9 @@ const QRScannerComponent: React.FC<any> = () => {
     if (videoRef.current) {
       codeReader?.decodeFromVideoDevice(undefined, videoRef.current, (result: any, err: any) => {
         if (result) {
-          addData(result.text)
-          alert(result.text)
-          console.log(data)
+          addData(result.getText()).then(() => {
+            alert(result.getText())
+          })
         }
       });
     }
@@ -42,7 +43,7 @@ const QRScannerComponent: React.FC<any> = () => {
 
 
         <IonList placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-          {data.map((res) =>
+          {data.map((res: any) =>
             <IonItem key={res.id} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               <IonLabel placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{res.data}</IonLabel>
             </IonItem>

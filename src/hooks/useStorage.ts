@@ -29,19 +29,27 @@ export function useStorage() {
         initStorage();
     }, [])
 
+    const getData = async () => {
+        const storedTodos = await store?.get(DATA_KEY) || [];
+        return storedTodos
+    }
+
     const addData = async (initData: string) => {
-        const newData = {
-            data: initData,
-            created: new Date().getTime(),
-            id: crypto.randomUUID()
+        if (data.length > 0) {
+            const newData = {
+                data: initData,
+                created: new Date().getTime(),
+                id: crypto.randomUUID()
+            }
+            const updatedData = [...data, newData];
+            setData(updatedData)
+            await store?.set(DATA_KEY, updatedData)
+            console.log(data)
         }
-        const updatedData = [...data, newData];
-        setData(updatedData)
-        store?.set(DATA_KEY, updatedData)
     }
 
     return {
-        data,
+        getData,
         addData
     }
 }
