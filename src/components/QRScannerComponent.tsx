@@ -5,8 +5,7 @@ import { useStorage } from '../hooks/useStorage';
 
 const QRScannerComponent: React.FC<any> = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [data, setData] = useState([]);
-  const { getData, addData } = useStorage();
+  const { data, addData } = useStorage();
 
 
   useEffect(() => {

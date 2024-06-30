@@ -44,12 +44,11 @@ export function useStorage() {
             const updatedData = [...data, newData];
             setData(updatedData)
             await store?.set(DATA_KEY, updatedData)
-            console.log(data)
         }
     }
 
     return {
-        getData,
+        data,
         addData
     }
 }
