@@ -2,14 +2,17 @@ import { IonContent, IonHeader, IonItem, IonList, IonPage, IonTitle, IonToolbar 
 import { useStorage } from '../hooks/useStorage';
 import { useZxing } from "react-zxing";
 import './Home.css';
+import { useState } from 'react';
 
 const Home: React.FC = () => {
   const { data, addData } = useStorage();
+  const [state, setState] = useState(0);
   const { ref } = useZxing({
     onDecodeResult(result) {
-      console.log(result)
+      console.log(state)
       pushData(result.getText()).then(() => {
         alert(result.getText())
+        setState((res) => res++)
       });
     },
   });
