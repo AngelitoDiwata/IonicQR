@@ -1,15 +1,21 @@
-import { IonButton, IonContent, IonHeader, IonInput, IonItem, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import { useState } from 'react';
+import { IonContent, IonHeader, IonItem, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import { useStorage } from '../hooks/useStorage';
+import { useZxing } from "react-zxing";
 import './Home.css';
 
 const Home: React.FC = () => {
+  const { data, addData } = useStorage();
+  const { ref } = useZxing({
+    onDecodeResult(result) {
+      console.log(result)
+      pushData(result.getText()).then(() => {
+        alert(result.getText())
+      });
+    },
+  });
 
-  const { todos, addTodo } = useStorage();
-  const [task, setTask] = useState('');
-
-  const createTodo = async () => {
-    await addTodo(task)
+  const pushData = async (data: any) => {
+    await addData(data)
   }
 
   // const updateStatus = async (id: string, status: number) => {
@@ -27,22 +33,21 @@ const Home: React.FC = () => {
 
 
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar color="primary">
-          <IonTitle>My Todos</IonTitle>
+    <IonPage placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+      <IonHeader placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+        <IonToolbar color="primary" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          <IonTitle placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>My Todos</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
-        <IonItem>
-          <IonInput onIonChange={(e) => setTask(e.detail.value!)} placeholder='Example: buy a country...' />
-          <IonButton slot='end' onClick={() => createTodo()} fill="clear">
-            Add
-          </IonButton>
+      <IonContent fullscreen placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+        <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '40px', marginBottom: '40px' }}>
+            <video ref={ref} style={{ width: '80%', border: '3px dashed white', borderRadius: '10px' }} />
+          </div>
         </IonItem>
-        <IonList>
+        <IonList placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           {
-            todos.map((todo: any, key: any) => <IonItem key={key}>{todo.task}</IonItem>)
+            data.map((todo: any, key: any) => <IonItem key={key} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{todo.task}</IonItem>)
           }
         </IonList>
       </IonContent>

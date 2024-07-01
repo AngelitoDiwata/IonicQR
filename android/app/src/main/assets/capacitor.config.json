@@ -1,0 +1,10 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "myApp",
+	"webDir": "build",
+	"bundledWebRuntime": false,
+	"server": {
+		"url": "https://localhost:3000",
+		"cleartext": true
+	}
+}
