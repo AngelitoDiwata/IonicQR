@@ -1,11 +1,11 @@
-import { IonContent, IonHeader, IonItem, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonItem, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import { useStorage } from '../hooks/useStorage';
 import { useZxing } from "react-zxing";
 import './Home.css';
 import { useState } from 'react';
 
 const Home: React.FC = () => {
-  const { data, addData } = useStorage();
+  const { data, addData, clearData } = useStorage();
   const [state, setState] = useState(0);
   const { ref } = useZxing({
     onDecodeResult(result) {
@@ -19,6 +19,20 @@ const Home: React.FC = () => {
 
   const pushData = async (data: any) => {
     await addData(data)
+  }
+
+
+  const postData = async () => {
+    fetch('http://localhost:3000', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    }).then(() => {
+      alert("successsfully exported Data")
+      clearData();
+    });
   }
 
   // const updateStatus = async (id: string, status: number) => {
@@ -40,6 +54,7 @@ const Home: React.FC = () => {
       <IonHeader placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
         <IonToolbar color="primary" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           <IonTitle placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Basic Scan</IonTitle>
+          <IonButton onClick={postData}>Export Items</IonButton>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>

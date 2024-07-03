@@ -39,8 +39,14 @@ export function useStorage() {
         store?.set(DATA_KEY, updatedData)
     }
 
+    const clearData = async () => {
+        setData([])
+        store?.set(DATA_KEY, [])
+    }
+
     return {
         data,
-        addData
+        addData,
+        clearData
     }
 }
