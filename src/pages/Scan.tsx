@@ -6,7 +6,7 @@ import QRScanner from '../components/QRScanner';
 import { arrowBack } from 'ionicons/icons';
 
 const Scan = ({ onBack }: any) => {
-  const { data, addData, clearData } = useStorage();
+  const { data, addData } = useStorage();
 
   const pushData = async (data: any) => {
     await addData(data.getText())
