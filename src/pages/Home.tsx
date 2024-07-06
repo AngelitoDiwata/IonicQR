@@ -2,7 +2,6 @@ import { IonButton, IonContent, IonHeader, IonItem, IonList, IonPage, IonTitle, 
 import { useStorage } from '../hooks/useStorage';
 import { useZxing } from "react-zxing";
 import './Home.css';
-import { useState } from 'react';
 
 const Home: React.FC = () => {
   const { data, addData, clearData } = useStorage();
@@ -20,7 +19,7 @@ const Home: React.FC = () => {
 
 
   const postData = async () => {
-    fetch('http://192.168.1.15:3000', {
+    fetch('https://192.168.1.15:3000', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
