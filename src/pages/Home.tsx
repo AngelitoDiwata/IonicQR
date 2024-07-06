@@ -6,12 +6,10 @@ import { useState } from 'react';
 
 const Home: React.FC = () => {
   const { data, addData, clearData } = useStorage();
-  const [state, setState] = useState(0);
   const { ref } = useZxing({
     onDecodeResult(result) {
       pushData(result.getText()).then(() => {
         alert(result.getText())
-        setState((res) => res++)
       });
     },
   });
