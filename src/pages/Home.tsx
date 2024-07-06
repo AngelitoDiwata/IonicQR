@@ -9,7 +9,6 @@ const Home: React.FC = () => {
   const [state, setState] = useState(0);
   const { ref } = useZxing({
     onDecodeResult(result) {
-      console.log(state)
       pushData(result.getText()).then(() => {
         alert(result.getText())
         setState((res) => res++)

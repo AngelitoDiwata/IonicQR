@@ -1,7 +1,13 @@
 {
-  "name": "myApp",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "react"
+    "name": "myApp",
+    "integrations": {
+        "capacitor": {}
+    },
+    "type": "react",
+    "server": {
+        "ssl": true,
+        "sslKey": "./localhost.key",
+        "sslCert": "./localhost.crt",
+        "host": "0.0.0.0"
+    }
 }
