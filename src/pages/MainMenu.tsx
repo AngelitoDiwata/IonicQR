@@ -1,5 +1,4 @@
-import { IonButton, IonContent, IonIcon, IonLabel, IonPage, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs } from '@ionic/react'
-import { IonReactRouter } from '@ionic/react-router'
+import { IonButton, IonContent, IonIcon, IonPage } from '@ionic/react'
 import { useState } from 'react'
 import { qrCode, logOut, document, logIn, power } from 'ionicons/icons';
 import Scan from './Scan';
