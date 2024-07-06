@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Storage } from '@ionic/storage';
 
 const DATA_KEY = 'my-data'
+const USER_KEY = 'users';
 
 export interface TodoItem {
     task: string;
@@ -24,6 +25,8 @@ export function useStorage() {
             const storedData = await store.get(DATA_KEY) || [];
             setData(storedData)
 
+
+
         }
         initStorage();
     }, [])
@@ -44,9 +47,15 @@ export function useStorage() {
         store?.set(DATA_KEY, [])
     }
 
+    const checkUserExistence = async (userKey: string) => {
+        const users = await store?.get(USER_KEY) || [];
+        return users.includes(userKey)
+    }
+
     return {
         data,
         addData,
-        clearData
+        clearData,
+        checkUserExistence
     }
 }
