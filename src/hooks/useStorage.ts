@@ -29,6 +29,14 @@ export function useStorage() {
             setData(storedData)
 
             setSettingData(await store.get(SETTINGS_KEY))
+            if (!settingData.appIP) {
+                store?.set(SETTINGS_KEY, {
+                    appIP: '',
+                    locationList: [],
+                })
+            }
+
+
             console.log(await store.get(SETTINGS_KEY))
 
         }
