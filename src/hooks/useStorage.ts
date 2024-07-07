@@ -36,9 +36,10 @@ export function useStorage() {
                 })
             }
 
-            // eslint-disable-next-line react-hooks/exhaustive-deps
         }
         initStorage();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const addData = async (task: string, location: string) => {
