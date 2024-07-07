@@ -20,9 +20,9 @@ const Count = ({ onBack, location, data, camPaused }: any) => {
         }
     }
 
-    useEffect(() => {
-        setCurrentData(data)
-    }, [])
+    // useEffect(() => {
+    //     setCurrentData(data)
+    // }, [])
 
     return (
         <IonPage>
