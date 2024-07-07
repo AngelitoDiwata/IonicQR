@@ -36,9 +36,7 @@ export function useStorage() {
                 })
             }
 
-
-            console.log(await store.get(SETTINGS_KEY))
-
+            // eslint-disable-next-line react-hooks/exhaustive-deps
         }
         initStorage();
     }, [])
