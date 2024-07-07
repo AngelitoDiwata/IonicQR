@@ -20,9 +20,11 @@ const Count = ({ onBack, location, data, camPaused }: any) => {
         }
     }
 
-    // useEffect(() => {
-    //     setCurrentData(data)
-    // }, [])
+    useEffect(() => {
+        setCurrentData(data)
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return (
         <IonPage>

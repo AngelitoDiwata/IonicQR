@@ -1,5 +1,5 @@
 import { IonButton, IonContent, IonIcon } from '@ionic/react'
-import { useEffect, useReducer, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { qrCode, logOut, document, logIn, power, cog } from 'ionicons/icons';
 import Scan from './Scan';
 import Login from './Login';
@@ -9,32 +9,32 @@ import Settings from './Settings';
 export default function MainMenu({ onLogOut }: any) {
     const { data, clearData, settingData, store, SETTINGS_KEY } = useStorage();
     const [selectedComponent, setSelectedComponent] = useState('')
+    const [camPaused, setCampaused] = useState(false)
 
     let components: { [key: string]: any } = {
-        "Scan": <Scan data={data} settingData={settingData} onBack={() => setSelectedComponent('')} />,
+        "Scan": <Scan camPaused={camPaused} data={data} settingData={settingData} onBack={() => setSelectedComponent('')} />,
         "Login": <Login />,
         "Settings": <Settings settingData={settingData} onBack={() => setSelectedComponent('')} />
     }
 
     const [currentComponent, setCurrentComponent] = useState(components[selectedComponent])
 
-    useEffect(() => {
-        const getSettings = async () => {
-            const settings = await store?.get(SETTINGS_KEY) || [];
-            return settings
-        }
 
+    useEffect(() => {
+        setCampaused(false)
         if (selectedComponent === 'Settings') {
             getSettings().then((res) => {
                 setCurrentComponent(<Settings settingData={res} onBack={() => setSelectedComponent('')} />)
             })
         } else if (selectedComponent === 'Scan') {
             getSettings().then((res) => {
-                setCurrentComponent(<Scan data={data} settingData={res} onBack={() => setSelectedComponent('')} />)
+                setCampaused(false)
+                setCurrentComponent(<Scan camPaused={camPaused} data={data} settingData={res} onBack={() => setSelectedComponent('')} />)
             })
         } else {
             setCurrentComponent(components[selectedComponent])
         }
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedComponent])
 
@@ -53,6 +53,10 @@ export default function MainMenu({ onLogOut }: any) {
         });
     }
 
+    const getSettings = async () => {
+        const settings = await store?.get(SETTINGS_KEY) || [];
+        return settings
+    }
 
 
 
