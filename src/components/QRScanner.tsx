@@ -1,6 +1,6 @@
 import { useZxing } from "react-zxing";
 
-export default function QRScanner({ handleScan }: any) {
+export default function QRScanner({ handleScan, paused }: any) {
 
     const { ref } = useZxing({
         onDecodeResult(result) {
@@ -8,6 +8,7 @@ export default function QRScanner({ handleScan }: any) {
                 handleScan(result)
             }
         },
+        paused
     });
 
     return (
