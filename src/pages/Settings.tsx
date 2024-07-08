@@ -18,7 +18,8 @@ export default function Settings({ onBack, settingData }: any) {
     }
 
     const addToLocationList = () => {
-        setLocationList([...locationList, currentLocation as never])
+        const currentList = locationList || []
+        setLocationList([...currentList, currentLocation as never])
     }
 
     const deleteFromLocationList = (key: number) => {
@@ -26,10 +27,6 @@ export default function Settings({ onBack, settingData }: any) {
         newLocationList.splice(key, 1);
         setLocationList(newLocationList)
     }
-
-    useEffect(() => {
-        console.log(settingData.appIP)
-    }, [settingData])
 
     return (
         <IonPage>
@@ -53,7 +50,7 @@ export default function Settings({ onBack, settingData }: any) {
                 <IonList>
 
                     {
-                        locationList.map((res: any, key: any) => {
+                        (locationList && locationList.length > 0) && locationList.map((res: any, key: any) => {
                             return (
                                 <IonItemSliding key={key}>
                                     <IonItem>
