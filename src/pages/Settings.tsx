@@ -1,13 +1,14 @@
 import { IonButton, IonButtons, IonContent, IonFooter, IonIcon, IonInput, IonItem, IonItemDivider, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonPage, IonTitle, IonToolbar } from "@ionic/react";
 import { arrowBack } from "ionicons/icons";
 import { useStorage } from "../hooks/useStorage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Settings({ onBack, settingData }: any) {
 
     const { setAppSetting } = useStorage();
     const [appIP, setAppIP] = useState(settingData.appIP);
-    const [currentLocation, setCurrentLocation] = useState('');
+    const [currentLocation, setCurrentLocation] = useState();
+    const [editKey, setEditKey] = useState();
     const [locationList, setLocationList] = useState(settingData.locationList);
 
     const assembleAppSetting = () => {
@@ -18,8 +19,22 @@ export default function Settings({ onBack, settingData }: any) {
     }
 
     const addToLocationList = () => {
-        const currentList = locationList || []
-        setLocationList([...currentList, currentLocation as never])
+        if (editKey !== undefined) {
+            editLocationList()
+        } else {
+            const currentList = locationList || []
+            setLocationList([...currentList, currentLocation as never])
+        }
+    }
+
+    const editLocationList = () => {
+        if (editKey !== undefined) {
+            const newLocationList = [...locationList];
+            newLocationList[editKey] = currentLocation;
+            setLocationList(newLocationList)
+            setEditKey(undefined)
+            setCurrentLocation(undefined)
+        }
     }
 
     const deleteFromLocationList = (key: number) => {
@@ -27,6 +42,14 @@ export default function Settings({ onBack, settingData }: any) {
         newLocationList.splice(key, 1);
         setLocationList(newLocationList)
     }
+
+    useEffect(() => {
+
+        console.log(editKey)
+        if (editKey !== undefined) {
+            setCurrentLocation(locationList[editKey])
+        }
+    }, [editKey])
 
     return (
         <IonPage>
@@ -44,8 +67,10 @@ export default function Settings({ onBack, settingData }: any) {
                 </IonItemDivider>
                 <h4>List of Warehouse Locations: </h4>
                 <IonItemDivider>
-                    <IonInput onIonChange={(e) => setCurrentLocation(e.detail.value!)} placeholder="Enter Location/Lot No:"></IonInput>
-                    <IonButton onClick={addToLocationList}>Add</IonButton>
+                    <IonInput value={currentLocation} onIonChange={(e) => setCurrentLocation(e.detail.value! as never)} placeholder="Enter Location/Lot No:"></IonInput>
+
+                    <IonButton onClick={addToLocationList}>{editKey !== undefined ? 'Update' : 'Add'}</IonButton>
+
                 </IonItemDivider>
                 <IonList>
 
@@ -58,7 +83,7 @@ export default function Settings({ onBack, settingData }: any) {
                                     </IonItem>
 
                                     <IonItemOptions>
-                                        <IonItemOption>Edit</IonItemOption>
+                                        <IonItemOption onClick={() => setEditKey(key)}>Edit</IonItemOption>
                                         <IonItemOption onClick={() => deleteFromLocationList(key)} color="danger">Delete</IonItemOption>
                                     </IonItemOptions>
                                 </IonItemSliding>
