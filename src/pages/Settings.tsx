@@ -1,4 +1,4 @@
-import { IonButton, IonButtons, IonContent, IonFooter, IonIcon, IonInput, IonItem, IonItemDivider, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonPage, IonTitle, IonToolbar } from "@ionic/react";
+import { IonAlert, IonButton, IonButtons, IonContent, IonFooter, IonIcon, IonInput, IonItem, IonItemDivider, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonPage, IonTitle, IonToolbar } from "@ionic/react";
 import { arrowBack } from "ionicons/icons";
 import { useStorage } from "../hooks/useStorage";
 import { useEffect, useState } from "react";
@@ -10,6 +10,8 @@ export default function Settings({ onBack, settingData }: any) {
     const [currentLocation, setCurrentLocation] = useState();
     const [editKey, setEditKey] = useState();
     const [locationList, setLocationList] = useState(settingData.locationList);
+    const [isAlertOpen, setIsAlertOpen] = useState(false);
+    const [isErrorAlertOpen, setIsErrorAlertOpen] = useState(false);
 
     const assembleAppSetting = () => {
         return {
@@ -17,24 +19,37 @@ export default function Settings({ onBack, settingData }: any) {
             locationList
         }
     }
-
     const addToLocationList = () => {
-        if (editKey !== undefined) {
+        if (checkDuplicates(currentLocation)) {
+            setIsErrorAlertOpen(true)
+        }
+        else if (editKey !== undefined) {
             editLocationList()
         } else {
             const currentList = locationList || []
             setLocationList([...currentList, currentLocation as never])
+            setIsAlertOpen(true)
         }
     }
-
+    const closeSuccessAlert = () => {
+        setIsAlertOpen(false)
+        setCurrentLocation(undefined)
+    }
     const editLocationList = () => {
-        if (editKey !== undefined) {
+        if (checkDuplicates(currentLocation)) {
+            setIsErrorAlertOpen(true)
+        }
+        else if (editKey !== undefined) {
             const newLocationList = [...locationList];
             newLocationList[editKey] = currentLocation;
             setLocationList(newLocationList)
+            setIsAlertOpen(true)
             setEditKey(undefined)
             setCurrentLocation(undefined)
         }
+    }
+    const checkDuplicates = (value: string | undefined) => {
+        return locationList.includes(value)
     }
 
     const deleteFromLocationList = (key: number) => {
@@ -44,11 +59,10 @@ export default function Settings({ onBack, settingData }: any) {
     }
 
     useEffect(() => {
-
-        console.log(editKey)
         if (editKey !== undefined) {
             setCurrentLocation(locationList[editKey])
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [editKey])
 
     return (
@@ -101,6 +115,20 @@ export default function Settings({ onBack, settingData }: any) {
                     </IonButton>
                 </IonToolbar>
             </IonFooter>
+            <IonAlert
+                isOpen={isAlertOpen}
+                header={`Successfully ${editKey !== undefined ? 'updated' : 'added'} location`}
+                subHeader={`Data saved: ${currentLocation}`}
+                buttons={['Close']}
+                onDidDismiss={() => closeSuccessAlert()}
+            ></IonAlert>
+            <IonAlert
+                isOpen={isErrorAlertOpen}
+                header="Location already exist!"
+                subHeader="Kindly save a new location name"
+                buttons={['Okay']}
+                onDidDismiss={() => setIsErrorAlertOpen(false)}
+            ></IonAlert>
         </IonPage>
     )
 }
