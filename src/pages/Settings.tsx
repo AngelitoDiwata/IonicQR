@@ -1,7 +1,7 @@
 import { IonButton, IonButtons, IonContent, IonFooter, IonIcon, IonInput, IonItem, IonItemDivider, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonPage, IonTitle, IonToolbar } from "@ionic/react";
 import { arrowBack } from "ionicons/icons";
 import { useStorage } from "../hooks/useStorage";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function Settings({ onBack, settingData }: any) {
 
