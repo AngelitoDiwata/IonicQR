@@ -28,13 +28,11 @@ export function useStorage() {
             const storedData = await store.get(DATA_KEY) || [];
             setData(storedData)
 
-            setSettingData(await store.get(SETTINGS_KEY))
-            if (!settingData.appIP) {
-                store?.set(SETTINGS_KEY, {
-                    appIP: '',
-                    locationList: [],
-                })
-            }
+            const storedSettings = await store.get(SETTINGS_KEY) || {
+                appIP: '',
+                locationList: [],
+            };
+            setSettingData(storedSettings)
 
         }
         initStorage();

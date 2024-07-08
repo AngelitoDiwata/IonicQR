@@ -18,7 +18,7 @@ export default function Settings({ onBack, settingData }: any) {
     }
 
     const addToLocationList = () => {
-        setLocationList([...settingData.locationList, currentLocation as never])
+        setLocationList([...locationList, currentLocation as never])
     }
 
     const deleteFromLocationList = (key: number) => {
