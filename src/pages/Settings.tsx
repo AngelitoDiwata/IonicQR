@@ -20,7 +20,7 @@ export default function Settings({ onBack, settingData }: any) {
         }
     }
     const addToLocationList = () => {
-        if (checkDuplicates(currentLocation)) {
+        if (locationList !== undefined && checkDuplicates(currentLocation)) {
             setIsErrorAlertOpen(true)
         }
         else if (editKey !== undefined) {
@@ -36,7 +36,7 @@ export default function Settings({ onBack, settingData }: any) {
         setCurrentLocation(undefined)
     }
     const editLocationList = () => {
-        if (checkDuplicates(currentLocation)) {
+        if (locationList !== undefined && checkDuplicates(currentLocation)) {
             setIsErrorAlertOpen(true)
         }
         else if (editKey !== undefined) {
