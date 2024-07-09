@@ -46,15 +46,17 @@ export function useStorage() {
             created: new Date().getTime(),
             id: crypto.randomUUID()
         }
-        const dataCopy = Object.assign({}, data)
-        if (dataCopy[location]) {
+        let dataCopy = Object.assign({}, data)
+        console.log(dataCopy)
+        if (dataCopy[location] !== undefined) {
             dataCopy[location] = [...dataCopy[location], newData]
-        } else if (!dataCopy[location]) {
-            Object.defineProperty(dataCopy, location, {
-                value: [newData],
-                writable: true
-            })
+
+            console.log(dataCopy)
+        } else if (dataCopy[location] === undefined) {
+            dataCopy = { ...dataCopy, [location]: [newData] }
+            console.log(dataCopy)
         }
+
 
         dispatch(setAppData(dataCopy))
         store?.set(DATA_KEY, dataCopy)

@@ -20,6 +20,7 @@ const Count = ({ onBack, location, data, camPaused, triggerParent }: any) => {
         else if (!isAlertOpen) {
             setScanMsg(res.getText());
             setIsAlertOpen(true)
+            console.log(location)
             setCurrentData(await addData(res.getText(), location));
             triggerParent();
         }
