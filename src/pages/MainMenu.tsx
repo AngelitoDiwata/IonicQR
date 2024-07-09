@@ -40,22 +40,19 @@ export default function MainMenu({ onLogOut }: any) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedComponent])
 
-    const postData = async () => {
-        fetch(`${settingData.appIP}`, {
-            mode: 'cors',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
-            body: JSON.stringify(data)
-        }).then(() => {
-            alert("successsfully exported Data")
-            clearData();
-        }).catch(() => {
-            alert("failed to export Data")
-        });
-    }
+    const postData = () => {
+        const jsonString = JSON.stringify(data, null, 2);
+        const blob = new Blob([jsonString], { type: 'application/json' });
+        const link = window.document.createElement('a');
+        link.download = `${new Date().toDateString()}_extract.json`;
+        link.href = window.URL.createObjectURL(blob);
+        window.document.body.appendChild(link);
+        link.click();
+        window.document.body.removeChild(link);
+        clearData();
+        alert("successsfully exported Data")
+    };
+
 
     const getSettings = async () => {
         const settings = await store?.get(SETTINGS_KEY) || [];
