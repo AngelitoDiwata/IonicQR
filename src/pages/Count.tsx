@@ -6,7 +6,7 @@ import QRScanner from '../components/QRScanner';
 import { arrowBack } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 
-const Count = ({ onBack, location, data, camPaused }: any) => {
+const Count = ({ onBack, location, data, camPaused, triggerParent }: any) => {
     const { addData } = useStorage();
     const [currentData, setCurrentData] = useState(data)
     const [isAlertOpen, setIsAlertOpen] = useState(false)
@@ -21,6 +21,7 @@ const Count = ({ onBack, location, data, camPaused }: any) => {
             setScanMsg(res.getText());
             setIsAlertOpen(true)
             setCurrentData(await addData(res.getText(), location));
+            triggerParent();
         }
     }
 
@@ -37,7 +38,7 @@ const Count = ({ onBack, location, data, camPaused }: any) => {
     return (
         <IonPage>
             <IonToolbar>
-                <IonButtons onClick={onBack} slot="start">
+                <IonButtons onClick={() => onBack(currentData)} slot="start">
                     <IonIcon className="ion-padding" size="medium" icon={arrowBack}></IonIcon>
                 </IonButtons>
                 <IonTitle>Location/Lot#: {location}</IonTitle>

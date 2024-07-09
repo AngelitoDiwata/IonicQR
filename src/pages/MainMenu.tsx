@@ -7,12 +7,14 @@ import { useStorage } from '../hooks/useStorage';
 import Settings from './Settings';
 
 export default function MainMenu({ onLogOut }: any) {
+    const [repaint, setRepaint] = useState(false)
     const { data, clearData, settingData, store, SETTINGS_KEY } = useStorage();
+    const [currentData, setCurrentData] = useState()
     const [selectedComponent, setSelectedComponent] = useState('')
     const [camPaused, setCampaused] = useState(false)
 
     let components: { [key: string]: any } = {
-        "Scan": <Scan camPaused={camPaused} data={data} settingData={settingData} onBack={() => setSelectedComponent('')} />,
+        "Scan": <Scan triggerParent={() => setRepaint(!repaint)} camPaused={camPaused} data={currentData || data} settingData={settingData} onBack={(res: any) => { setCurrentData(res); setCampaused(true); setSelectedComponent('') }} />,
         "Login": <Login />,
         "Settings": <Settings settingData={settingData} onBack={() => setSelectedComponent('')} />
     }
@@ -29,7 +31,7 @@ export default function MainMenu({ onLogOut }: any) {
         } else if (selectedComponent === 'Scan') {
             getSettings().then((res) => {
                 setCampaused(false)
-                setCurrentComponent(<Scan camPaused={camPaused} data={data} settingData={res} onBack={() => { setCampaused(true); setSelectedComponent('') }} />)
+                setCurrentComponent(<Scan triggerParent={() => setRepaint(!repaint)} camPaused={camPaused} data={currentData || data} settingData={res} onBack={(res: any) => { setCurrentData(res); setCampaused(true); setSelectedComponent('') }} />)
             })
         } else {
             setCurrentComponent(components[selectedComponent])

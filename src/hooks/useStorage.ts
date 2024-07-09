@@ -69,6 +69,14 @@ export function useStorage() {
         store?.set(SETTINGS_KEY, setting)
     }
 
+    const getData = async () => {
+        return await store?.get(DATA_KEY)
+    }
+
+    const getSettingData = async () => {
+        return await store?.get(SETTINGS_KEY)
+    }
+
 
     return {
         SETTINGS_KEY,
@@ -78,6 +86,8 @@ export function useStorage() {
         clearData,
         checkUserExistence,
         setAppSetting,
-        settingData
+        settingData,
+        getData,
+        getSettingData
     }
 }
