@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Storage } from '@ionic/storage';
+import { useDispatch, useSelector } from "react-redux";
+import { addStore, setAppData, addSettingData } from "../store/reducers/DataSlice";
 
 const DATA_KEY = 'my-data'
 const USER_KEY = 'users';
@@ -13,9 +15,8 @@ export interface TodoItem {
 
 
 export function useStorage() {
-    const [store, setStore] = useState<Storage>();
-    const [data, setData] = useState<{ [key: string]: any }>([]);
-    const [settingData, setSettingData] = useState<any>({});
+    const { store, data, settingData } = useSelector((state: any) => state.data)
+    const dispatch = useDispatch();
     useEffect(() => {
         const initStorage = async () => {
             const newStore = new Storage({
@@ -23,20 +24,19 @@ export function useStorage() {
             })
 
             const store = await newStore.create();
-            setStore(store)
+            dispatch(addStore(store))
 
             const storedData = await store.get(DATA_KEY) || [];
-            setData(storedData)
+            dispatch(setAppData(storedData))
 
             const storedSettings = await store.get(SETTINGS_KEY) || {
                 appIP: '',
                 locationList: [],
             };
-            setSettingData(storedSettings)
+            dispatch(addSettingData(storedSettings))
 
         }
         initStorage();
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -46,16 +46,23 @@ export function useStorage() {
             created: new Date().getTime(),
             id: crypto.randomUUID()
         }
-        const dataCopy = data
-        dataCopy[location] ? dataCopy[location].push(newData) : dataCopy[location] = [newData]
+        const dataCopy = Object.assign({}, data)
+        if (dataCopy[location]) {
+            dataCopy[location] = [...dataCopy[location], newData]
+        } else if (!dataCopy[location]) {
+            Object.defineProperty(dataCopy, location, {
+                value: [newData],
+                writable: true
+            })
+        }
 
-        setData(dataCopy)
+        dispatch(setAppData(dataCopy))
         store?.set(DATA_KEY, dataCopy)
         return dataCopy
     }
 
     const clearData = async () => {
-        setData([])
+        dispatch(setAppData([]))
         store?.set(DATA_KEY, [])
     }
 
@@ -65,7 +72,7 @@ export function useStorage() {
     }
 
     const setAppSetting = async (setting: any) => {
-        setSettingData(setting)
+        dispatch(addSettingData(setting))
         store?.set(SETTINGS_KEY, setting)
     }
 

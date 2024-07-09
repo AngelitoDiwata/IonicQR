@@ -25,24 +25,24 @@ const Scan = ({ onBack, settingData, data, camPaused, triggerParent }: any) => {
 
   return (
     !location ?
-      <IonPage>
-        <IonToolbar>
-          <IonButtons onClick={() => onBack(currentData)} slot="start">
-            <IonIcon className="ion-padding" size="medium" icon={arrowBack}></IonIcon>
+      <IonPage placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+        <IonToolbar placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          <IonButtons onClick={() => onBack(currentData)} slot="start" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <IonIcon className="ion-padding" size="medium" icon={arrowBack} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonIcon>
           </IonButtons>
-          <IonTitle>Scan Location/Lot#</IonTitle>
+          <IonTitle placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Scan Location/Lot#</IonTitle>
         </IonToolbar>
-        <IonContent className="ion-padding">
-          <IonItem>
+        <IonContent className="ion-padding" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
             <QRScanner invalidScan={invalidScan} paused={camPaused} handleScan={pushData} />
           </IonItem>
-          <IonList>
+          <IonList placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
             {
               settingData.locationList.map((location: any, key: any) =>
-              (<IonItem key={key} onClick={() => setLocation(location)} button={true}>
-                <IonIcon color="danger" slot="start" icon={listCircle} size="large"></IonIcon>
-                <IonLabel>{location}</IonLabel>
-                <IonNote slot="end">qty: {currentData[location] ? currentData[location].length : 0}</IonNote>
+              (<IonItem key={key} onClick={() => setLocation(location)} button={true} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                <IonIcon color="danger" slot="start" icon={listCircle} size="large" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonIcon>
+                <IonLabel placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{location}</IonLabel>
+                <IonNote slot="end" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>qty: {currentData[location] ? currentData[location].length : 0}</IonNote>
               </IonItem>))
             }
           </IonList>

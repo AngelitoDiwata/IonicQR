@@ -36,30 +36,30 @@ const Count = ({ onBack, location, data, camPaused, triggerParent }: any) => {
     }, [])
 
     return (
-        <IonPage>
-            <IonToolbar>
-                <IonButtons onClick={() => onBack(currentData)} slot="start">
-                    <IonIcon className="ion-padding" size="medium" icon={arrowBack}></IonIcon>
+        <IonPage placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <IonToolbar placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                <IonButtons onClick={() => onBack(currentData)} slot="start" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    <IonIcon className="ion-padding" size="medium" icon={arrowBack} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonIcon>
                 </IonButtons>
-                <IonTitle>Location/Lot#: {location}</IonTitle>
+                <IonTitle placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Location/Lot#: {location}</IonTitle>
             </IonToolbar>
-            <IonContent className="ion-padding">
-                <IonItem>
+            <IonContent className="ion-padding" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                     <QRScanner invalidScan={invalidScan} paused={camPaused} handleScan={pushData} />
                 </IonItem>
 
-                <IonGrid>
+                <IonGrid placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
 
-                    <IonRow style={{ backgroundColor: 'white', color: 'black', borderRadius: '5px', boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)' }}>
+                    <IonRow style={{ backgroundColor: 'white', color: 'black', borderRadius: '5px', boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)' }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                         {
-                            ['PRDCODE', 'UNIT', 'LOT#', 'QTY'].map((item: any, key: any) => (<IonCol style={{ fontWeight: 'bold' }} key={key}>{item}</IonCol>))
+                            ['PRDCODE', 'UNIT', 'LOT#', 'QTY'].map((item: any, key: any) => (<IonCol style={{ fontWeight: 'bold' }} key={key} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{item}</IonCol>))
                         }
                     </IonRow>
                     {
                         currentData[location] && currentData[location].map((todo: any, key: any) => (
-                            <IonRow key={key}>
+                            <IonRow key={key} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                                 {
-                                    todo.task.split(",").map((item: any, key2: any) => <IonCol style={{ paddingTop: '10px', paddingBottom: '10px' }} key={key2}>{item}</IonCol>)
+                                    todo.task.split(",").map((item: any, key2: any) => <IonCol style={{ paddingTop: '10px', paddingBottom: '10px' }} key={key2} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{item}</IonCol>)
                                 }
                             </IonRow>
                         ))

@@ -64,24 +64,24 @@ export default function MainMenu({ onLogOut }: any) {
 
     return (
         (
-            <IonContent className="ion-padding">
-                <IonButton size='large' expand='block' onClick={() => setSelectedComponent('Scan')}>
-                    <IonIcon slot='start' icon={qrCode}></IonIcon> Basic Scan
+            <IonContent className="ion-padding" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                <IonButton size='large' expand='block' onClick={() => setSelectedComponent('Scan')} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    <IonIcon slot='start' icon={qrCode} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonIcon> Basic Scan
                 </IonButton>
-                <IonButton size='large' disabled expand='block' onClick={() => setSelectedComponent('Scan')}>
-                    <IonIcon slot='start' icon={logIn}></IonIcon> In to Warehouse
+                <IonButton size='large' disabled expand='block' onClick={() => setSelectedComponent('Scan')} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    <IonIcon slot='start' icon={logIn} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonIcon> In to Warehouse
                 </IonButton>
-                <IonButton size='large' disabled expand='block' onClick={() => setSelectedComponent('Scan')}>
-                    <IonIcon slot='start' icon={logOut}></IonIcon> Out from Warehouse
+                <IonButton size='large' disabled expand='block' onClick={() => setSelectedComponent('Scan')} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    <IonIcon slot='start' icon={logOut} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonIcon> Out from Warehouse
                 </IonButton>
-                <IonButton size='large' expand='block' onClick={() => postData()}>
-                    <IonIcon slot='start' icon={document}></IonIcon> Extract Data
+                <IonButton size='large' expand='block' onClick={() => postData()} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    <IonIcon slot='start' icon={document} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonIcon> Extract Data
                 </IonButton>
-                <IonButton size='large' expand='block' onClick={() => setSelectedComponent('Settings')}>
-                    <IonIcon slot='start' icon={cog}></IonIcon> Settings
+                <IonButton size='large' expand='block' onClick={() => setSelectedComponent('Settings')} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    <IonIcon slot='start' icon={cog} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonIcon> Settings
                 </IonButton>
-                <IonButton size='large' fill="outline" color='danger' expand='block' onClick={onLogOut}>
-                    <IonIcon slot='start' icon={power}></IonIcon> Log out
+                <IonButton size='large' fill="outline" color='danger' expand='block' onClick={onLogOut} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    <IonIcon slot='start' icon={power} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonIcon> Log out
                 </IonButton>
                 {
                     selectedComponent !== '' && currentComponent
