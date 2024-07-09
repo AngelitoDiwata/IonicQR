@@ -24,12 +24,12 @@ export default function MainMenu({ onLogOut }: any) {
         setCampaused(false)
         if (selectedComponent === 'Settings') {
             getSettings().then((res) => {
-                setCurrentComponent(<Settings settingData={res} onBack={() => setSelectedComponent('')} />)
+                setCurrentComponent(<Settings settingData={res} onBack={() => { setCampaused(true); setSelectedComponent('') }} />)
             })
         } else if (selectedComponent === 'Scan') {
             getSettings().then((res) => {
                 setCampaused(false)
-                setCurrentComponent(<Scan camPaused={camPaused} data={data} settingData={res} onBack={() => setSelectedComponent('')} />)
+                setCurrentComponent(<Scan camPaused={camPaused} data={data} settingData={res} onBack={() => { setCampaused(true); setSelectedComponent('') }} />)
             })
         } else {
             setCurrentComponent(components[selectedComponent])

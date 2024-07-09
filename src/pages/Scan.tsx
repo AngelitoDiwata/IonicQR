@@ -1,38 +1,52 @@
-import { IonContent, IonHeader, IonIcon, IonItem, IonList, IonPage, IonText, IonToolbar } from '@ionic/react';
+import { IonButtons, IonContent, IonIcon, IonItem, IonLabel, IonList, IonNote, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import './Home.css';
 import QRScanner from '../components/QRScanner';
 
-import { arrowBack } from 'ionicons/icons';
+import { arrowBack, listCircle } from 'ionicons/icons';
 import { useState } from 'react';
 import Count from './Count';
 
 const Scan = ({ onBack, settingData, data, camPaused }: any) => {
   const [location, setLocation] = useState(null)
+  const [invalidScan, setInvalidScan] = useState(false)
 
   const pushData = async (data: any) => {
-    await setLocation(data.getText());
+    if (!checkValidQRCode(data.getText())) {
+      setInvalidScan(true)
+    } else {
+      await setLocation(data.getText());
+    }
+  }
+
+  const checkValidQRCode = (code: string) => {
+    return settingData.locationList.includes(code)
   }
 
   return (
     !location ?
       <IonPage>
-        <IonHeader>
-          <IonToolbar color="primary">
-            <IonIcon size='large' onClick={onBack} icon={arrowBack}></IonIcon>
-          </IonToolbar>
-        </IonHeader>
+        <IonToolbar>
+          <IonButtons onClick={onBack} slot="start">
+            <IonIcon className="ion-padding" size="medium" icon={arrowBack}></IonIcon>
+          </IonButtons>
+          <IonTitle>Scan Location/Lot#</IonTitle>
+        </IonToolbar>
         <IonContent className="ion-padding">
-          <IonText>Scan Location No & Lot No to count</IonText>
           <IonItem>
-            <QRScanner paused={camPaused} handleScan={pushData} />
+            <QRScanner invalidScan={invalidScan} paused={camPaused} handleScan={pushData} />
           </IonItem>
           <IonList>
             {
-              settingData.locationList.map((location: any, key: any) => <IonItem onClick={() => setLocation(location)} key={key}>{location}</IonItem>)
+              settingData.locationList.map((location: any, key: any) =>
+              (<IonItem key={key} onClick={() => setLocation(location)} button={true}>
+                <IonIcon color="danger" slot="start" icon={listCircle} size="large"></IonIcon>
+                <IonLabel>{location}</IonLabel>
+                <IonNote slot="end">qty: 6</IonNote>
+              </IonItem>))
             }
           </IonList>
         </IonContent>
-      </IonPage> : <Count camPaused={camPaused} data={data} onBack={() => setLocation(null)} location={location} />
+      </IonPage> : <Count camPaused={camPaused} data={data} onBack={() => { setInvalidScan(false); setLocation(null) }} location={location} />
   );
 };
 
