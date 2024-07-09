@@ -7,10 +7,10 @@ function Home() {
 
     return (
 
-        loginSelected ? <Login onLogout={setLoginSelected} /> : <IonPage>
-            <IonContent className="ion-padding">
-                <IonButton size='large' expand='block' onClick={() => setLoginSelected(true)}> Login </IonButton>
-                <IonButton size='large' expand='block' fill="outline" color='danger' > Exit </IonButton>
+        loginSelected ? <Login onLogout={setLoginSelected} /> : <IonPage placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <IonContent className="ion-padding" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                <IonButton size='large' expand='block' onClick={() => setLoginSelected(true)} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}> Login </IonButton>
+                <IonButton size='large' expand='block' fill="outline" color='danger' placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} > Exit </IonButton>
                 {
                     loginSelected && <Login />
                 }

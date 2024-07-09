@@ -67,36 +67,36 @@ export default function Settings({ onBack, settingData }: any) {
     }, [editKey])
 
     return (
-        <IonPage>
-            <IonToolbar>
-                <IonButtons onClick={onBack} slot="start">
-                    <IonIcon className="ion-padding" size="medium" icon={arrowBack}></IonIcon>
+        <IonPage placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <IonToolbar placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                <IonButtons onClick={onBack} slot="start" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    <IonIcon className="ion-padding" size="medium" icon={arrowBack} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonIcon>
                 </IonButtons>
-                <IonTitle>Settings</IonTitle>
+                <IonTitle placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Settings</IonTitle>
             </IonToolbar>
-            <IonContent className="ion-padding">
+            <IonContent className="ion-padding" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
 
                 <h5>Current Server IP: </h5>
-                <IonItemDivider>
-                    <IonInput value={appIP} onIonChange={(e) => setAppIP(e.detail.value!)} placeholder="Enter text"></IonInput>
+                <IonItemDivider placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    <IonInput value={appIP} onIonChange={(e) => setAppIP(e.detail.value!)} placeholder="Enter text" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonInput>
                 </IonItemDivider>
                 <h4>List of Warehouse Locations: </h4>
-                <IonItemDivider>
-                    <IonInput value={currentLocation} onIonChange={(e) => setCurrentLocation(e.detail.value! as never)} placeholder="Enter Location/Lot No:"></IonInput>
-                    <IonButton onClick={addToLocationList}>{editKey !== undefined ? 'Update' : 'Add'}</IonButton>
+                <IonItemDivider placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    <IonInput value={currentLocation} onIonChange={(e) => setCurrentLocation(e.detail.value! as never)} placeholder="Enter Location/Lot No:" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonInput>
+                    <IonButton onClick={addToLocationList} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{editKey !== undefined ? 'Update' : 'Add'}</IonButton>
                 </IonItemDivider>
-                <IonList>
+                <IonList placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                     {
                         (locationList && locationList.length > 0) && locationList.map((res: any, key: any) => {
                             return (
-                                <IonItemSliding key={key}>
-                                    <IonItem>
-                                        <IonLabel>{res}</IonLabel>
+                                <IonItemSliding key={key} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                                    <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                                        <IonLabel placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{res}</IonLabel>
                                     </IonItem>
 
-                                    <IonItemOptions>
-                                        <IonItemOption onClick={() => setEditKey(key)}>Edit</IonItemOption>
-                                        <IonItemOption onClick={() => deleteFromLocationList(key)} color="danger">Delete</IonItemOption>
+                                    <IonItemOptions placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                                        <IonItemOption onClick={() => setEditKey(key)} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Edit</IonItemOption>
+                                        <IonItemOption onClick={() => deleteFromLocationList(key)} color="danger" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Delete</IonItemOption>
                                     </IonItemOptions>
                                 </IonItemSliding>
                             )
@@ -106,9 +106,9 @@ export default function Settings({ onBack, settingData }: any) {
                 </IonList>
 
             </IonContent>
-            <IonFooter className="ion-padding">
-                <IonToolbar>
-                    <IonButton size='large' expand='block' onClick={() => { setAppSetting(assembleAppSetting()); setIsDBSaveAlertOpen(true) }}>
+            <IonFooter className="ion-padding" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                <IonToolbar placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    <IonButton size='large' expand='block' onClick={() => { setAppSetting(assembleAppSetting()); setIsDBSaveAlertOpen(true); }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                         Save
                     </IonButton>
                 </IonToolbar>

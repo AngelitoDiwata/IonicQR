@@ -19,11 +19,11 @@ export default function Login({ onLogout }: any) {
 
     return (
         !userLoggedIn ?
-            <IonPage>
-                <IonHeader>
+            <IonPage placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                <IonHeader placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                 </IonHeader>
-                <IonContent fullscreen>
-                    <IonItem>
+                <IonContent fullscreen placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                         <QRScanner handleScan={handleLoginScan} />
                     </IonItem>
                 </IonContent>
