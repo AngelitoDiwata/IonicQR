@@ -42,9 +42,11 @@ export default function MainMenu({ onLogOut }: any) {
 
     const postData = async () => {
         fetch(`${settingData.appIP}`, {
+            mode: 'cors',
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
             },
             body: JSON.stringify(data)
         }).then(() => {
