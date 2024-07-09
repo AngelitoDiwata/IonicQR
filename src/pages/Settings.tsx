@@ -12,6 +12,7 @@ export default function Settings({ onBack, settingData }: any) {
     const [locationList, setLocationList] = useState(settingData.locationList);
     const [isAlertOpen, setIsAlertOpen] = useState(false);
     const [isErrorAlertOpen, setIsErrorAlertOpen] = useState(false);
+    const [isDBSaveAlertOpen, setIsDBSaveAlertOpen] = useState(false);
 
     const assembleAppSetting = () => {
         return {
@@ -82,12 +83,9 @@ export default function Settings({ onBack, settingData }: any) {
                 <h4>List of Warehouse Locations: </h4>
                 <IonItemDivider>
                     <IonInput value={currentLocation} onIonChange={(e) => setCurrentLocation(e.detail.value! as never)} placeholder="Enter Location/Lot No:"></IonInput>
-
                     <IonButton onClick={addToLocationList}>{editKey !== undefined ? 'Update' : 'Add'}</IonButton>
-
                 </IonItemDivider>
                 <IonList>
-
                     {
                         (locationList && locationList.length > 0) && locationList.map((res: any, key: any) => {
                             return (
@@ -110,7 +108,7 @@ export default function Settings({ onBack, settingData }: any) {
             </IonContent>
             <IonFooter className="ion-padding">
                 <IonToolbar>
-                    <IonButton size='large' expand='block' onClick={() => setAppSetting(assembleAppSetting())}>
+                    <IonButton size='large' expand='block' onClick={() => { setAppSetting(assembleAppSetting()); setIsDBSaveAlertOpen(true) }}>
                         Save
                     </IonButton>
                 </IonToolbar>
@@ -128,6 +126,13 @@ export default function Settings({ onBack, settingData }: any) {
                 subHeader="Kindly save a new location name"
                 buttons={['Okay']}
                 onDidDismiss={() => setIsErrorAlertOpen(false)}
+            ></IonAlert>
+            <IonAlert
+                isOpen={isDBSaveAlertOpen}
+                header="Settings saved!"
+                subHeader="You are going back to the main menu"
+                buttons={['Okay']}
+                onDidDismiss={() => { onBack(); setIsDBSaveAlertOpen(false) }}
             ></IonAlert>
         </IonPage>
     )

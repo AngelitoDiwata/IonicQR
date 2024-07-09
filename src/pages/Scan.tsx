@@ -6,9 +6,10 @@ import { arrowBack, listCircle } from 'ionicons/icons';
 import { useState } from 'react';
 import Count from './Count';
 
-const Scan = ({ onBack, settingData, data, camPaused }: any) => {
+const Scan = ({ onBack, settingData, data, camPaused, triggerParent }: any) => {
   const [location, setLocation] = useState(null)
   const [invalidScan, setInvalidScan] = useState(false)
+  const [currentData, setCurrentData] = useState(data)
 
   const pushData = async (data: any) => {
     if (!checkValidQRCode(data.getText())) {
@@ -26,7 +27,7 @@ const Scan = ({ onBack, settingData, data, camPaused }: any) => {
     !location ?
       <IonPage>
         <IonToolbar>
-          <IonButtons onClick={onBack} slot="start">
+          <IonButtons onClick={() => onBack(currentData)} slot="start">
             <IonIcon className="ion-padding" size="medium" icon={arrowBack}></IonIcon>
           </IonButtons>
           <IonTitle>Scan Location/Lot#</IonTitle>
@@ -41,12 +42,12 @@ const Scan = ({ onBack, settingData, data, camPaused }: any) => {
               (<IonItem key={key} onClick={() => setLocation(location)} button={true}>
                 <IonIcon color="danger" slot="start" icon={listCircle} size="large"></IonIcon>
                 <IonLabel>{location}</IonLabel>
-                <IonNote slot="end">qty: 6</IonNote>
+                <IonNote slot="end">qty: {currentData[location] ? currentData[location].length : 0}</IonNote>
               </IonItem>))
             }
           </IonList>
         </IonContent>
-      </IonPage> : <Count camPaused={camPaused} data={data} onBack={() => { setInvalidScan(false); setLocation(null) }} location={location} />
+      </IonPage> : <Count triggerParent={triggerParent} camPaused={camPaused} data={currentData} onBack={(data: any) => { setCurrentData(data); setInvalidScan(false); setLocation(null) }} location={location} />
   );
 };
 
