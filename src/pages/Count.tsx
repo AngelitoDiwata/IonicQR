@@ -13,7 +13,6 @@ const Count = ({ onBack, location, data, camPaused, triggerParent }: any) => {
     const [scanMsg, setScanMsg] = useState('')
     const [invalidScan, setInvalidScan] = useState(false)
     const [scanMode, setScanMode] = useState('single')
-    const [batchCount, setBatchCount] = useState(0)
     const [batchAlert, setBatchAlert] = useState(false)
     const [batchStash, setBatchStash] = useState()
 
@@ -33,8 +32,9 @@ const Count = ({ onBack, location, data, camPaused, triggerParent }: any) => {
         }
     }
 
-    const handleBatchAlertClose = async () => {
-        Array.from(Array(batchCount).keys()).forEach(() => {
+    const handleBatchAlertClose = async (v: any) => {
+        console.log(v)
+        Array.from(Array(v.batchCount).keys()).forEach(() => {
             saveData(batchStash, true)
         })
         setIsAlertOpen(true)
@@ -112,11 +112,12 @@ const Count = ({ onBack, location, data, camPaused, triggerParent }: any) => {
                 buttons={['Save']}
                 inputs={[
                     {
+                        name: 'batchCount',
                         type: 'number',
                         placeholder: 'Batch count'
                     }
                 ]}
-                onDidDismiss={() => handleBatchAlertClose()}
+                onDidDismiss={(v) => handleBatchAlertClose(v)}
             ></IonAlert>
 
 
