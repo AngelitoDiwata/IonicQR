@@ -37,6 +37,7 @@ const Count = ({ onBack, location, data, camPaused, triggerParent }: any) => {
         Array.from(Array(v.batchCount).keys()).forEach(() => {
             saveData(batchStash, true)
         })
+        setBatchAlert(false)
         setIsAlertOpen(true)
     }
 
@@ -109,7 +110,6 @@ const Count = ({ onBack, location, data, camPaused, triggerParent }: any) => {
             <IonAlert
                 isOpen={batchAlert}
                 header="Please enter batch threshold"
-                buttons={['Save']}
                 inputs={[
                     {
                         name: 'batchCount',
@@ -117,7 +117,14 @@ const Count = ({ onBack, location, data, camPaused, triggerParent }: any) => {
                         placeholder: 'Batch count'
                     }
                 ]}
-                onDidDismiss={(v) => handleBatchAlertClose(v)}
+                buttons={
+                    [{
+                        text: 'Save',
+                        handler: (alertData) => { //takes the data 
+                            handleBatchAlertClose(alertData.batchCount);
+                        }
+                    }]
+                }
             ></IonAlert>
 
 
