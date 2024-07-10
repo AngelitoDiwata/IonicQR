@@ -34,7 +34,7 @@ const Count = ({ onBack, location, data, camPaused, triggerParent }: any) => {
 
     const handleBatchAlertClose = async (v: any) => {
         console.log(v)
-        Array.from(Array(v.batchCount).keys()).forEach(() => {
+        Array.from(Array(v).keys()).forEach(() => {
             saveData(batchStash, true)
         })
         setBatchAlert(false)
