@@ -1,4 +1,4 @@
-import { IonAlert, IonButtons, IonCol, IonContent, IonGrid, IonIcon, IonItem, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
+import { IonAlert, IonButtons, IonCol, IonContent, IonGrid, IonIcon, IonItem, IonLabel, IonPage, IonRow, IonSegment, IonSegmentButton, IonTitle, IonToggle, IonToolbar } from '@ionic/react';
 import { useStorage } from '../hooks/useStorage';
 import './Home.css';
 import QRScanner from '../components/QRScanner';
@@ -12,18 +12,39 @@ const Count = ({ onBack, location, data, camPaused, triggerParent }: any) => {
     const [isAlertOpen, setIsAlertOpen] = useState(false)
     const [scanMsg, setScanMsg] = useState('')
     const [invalidScan, setInvalidScan] = useState(false)
+    const [scanMode, setScanMode] = useState('single')
+    const [batchCount, setBatchCount] = useState(0)
+    const [batchAlert, setBatchAlert] = useState(false)
+    const [batchStash, setBatchStash] = useState()
+
 
     const pushData = async (res: any) => {
         if (!checkValidQRCode(res.getText())) {
             setInvalidScan(true)
         }
         else if (!isAlertOpen) {
-            setScanMsg(res.getText());
-            setIsAlertOpen(true)
-            console.log(location)
-            setCurrentData(await addData(res.getText(), location));
-            triggerParent();
+            if (scanMode === 'batch') {
+                setBatchAlert(true)
+                setBatchStash(res.getText())
+
+            } else {
+                saveData(res, false);
+            }
         }
+    }
+
+    const handleBatchAlertClose = async () => {
+        Array.from(Array(batchCount).keys()).forEach(() => {
+            saveData(batchStash, true)
+        })
+        setIsAlertOpen(true)
+    }
+
+    const saveData = async (res: any, batch: boolean) => {
+        setScanMsg(res.getText());
+        !batch && setIsAlertOpen(true)
+        setCurrentData(await addData(res.getText(), location));
+        triggerParent();
     }
 
     const checkValidQRCode = (code: string) => {
@@ -45,6 +66,15 @@ const Count = ({ onBack, location, data, camPaused, triggerParent }: any) => {
                 <IonTitle placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Location/Lot#: {location}</IonTitle>
             </IonToolbar>
             <IonContent className="ion-padding" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                <IonSegment value={scanMode} onIonChange={(val) => setScanMode(val.detail.value as any)} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    <IonSegmentButton value="single" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                        <IonLabel placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Single</IonLabel>
+                    </IonSegmentButton>
+                    <IonSegmentButton value="batch" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                        <IonLabel placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Batch</IonLabel>
+                    </IonSegmentButton>
+                </IonSegment>
+
                 <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                     <QRScanner invalidScan={invalidScan} paused={camPaused} handleScan={pushData} />
                 </IonItem>
@@ -76,6 +106,20 @@ const Count = ({ onBack, location, data, camPaused, triggerParent }: any) => {
                 buttons={['Close']}
                 onDidDismiss={() => setIsAlertOpen(false)}
             ></IonAlert>
+            <IonAlert
+                isOpen={batchAlert}
+                header="Please enter batch threshold"
+                buttons={['Save']}
+                inputs={[
+                    {
+                        type: 'number',
+                        placeholder: 'Batch count'
+                    }
+                ]}
+                onDidDismiss={() => handleBatchAlertClose()}
+            ></IonAlert>
+
+
         </IonPage>
     );
 };
