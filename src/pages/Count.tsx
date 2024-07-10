@@ -24,7 +24,7 @@ const Count = ({ onBack, location, data, camPaused, triggerParent }: any) => {
         else if (!isAlertOpen) {
             if (scanMode === 'batch') {
                 setBatchAlert(true)
-                setBatchStash(res.getText())
+                setBatchStash(res)
 
             } else {
                 saveData(res, false);
@@ -35,6 +35,7 @@ const Count = ({ onBack, location, data, camPaused, triggerParent }: any) => {
     const handleBatchAlertClose = async (v: any) => {
         console.log(v)
         console.log(Array.from(Array(v).keys()))
+
         Array.from(Array(v).keys()).forEach(async () => {
             await saveData(batchStash, true)
         })
