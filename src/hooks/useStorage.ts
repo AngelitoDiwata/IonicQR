@@ -40,28 +40,47 @@ export function useStorage() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    const addData = async (task: string, location: string) => {
-        const newData = {
-            task,
-            created: new Date().getTime(),
-            id: crypto.randomUUID()
-        }
-        let dataCopy = Object.assign({}, data)
+    // const addData = async (task: string, location: string, currentData: any) => {
+    //     const newData = {
+    //         task,
+    //         created: new Date().getTime(),
+    //         id: crypto.randomUUID()
+    //     }
+    //     const dataCopy = { ...currentData }
+    //     dataCopy[location] ? dataCopy[location].push(newData) : dataCopy[location] = [newData]
+
+    //     dispatch(setAppData(dataCopy))
+    //     console.log(dataCopy)
+    //     store?.set(DATA_KEY, data)
+    //     return dataCopy
+    // }
+
+    const addData = (newData: any, location: string, currentData: any) => {
+
+        let dataCopy = Object.assign({}, currentData)
         console.log(dataCopy)
         if (dataCopy[location] !== undefined) {
-            dataCopy[location] = [...dataCopy[location], newData]
+            if (newData.task) {
+                dataCopy[location] = [...dataCopy[location], newData]
+            } else {
+                dataCopy[location] = [...dataCopy[location], ...newData]
+            }
 
             console.log(dataCopy)
+            dispatch(setAppData(dataCopy))
+            store?.set(DATA_KEY, dataCopy)
         } else if (dataCopy[location] === undefined) {
-            dataCopy = { ...dataCopy, [location]: [newData] }
+            dataCopy = { ...dataCopy, [location]: newData.task ? [newData] : [...newData] }
             console.log(dataCopy)
+            dispatch(setAppData(dataCopy))
+            store?.set(DATA_KEY, dataCopy)
         }
 
 
-        dispatch(setAppData(dataCopy))
-        store?.set(DATA_KEY, dataCopy)
+
         return dataCopy
     }
+
 
     const clearData = async () => {
         dispatch(setAppData([]))

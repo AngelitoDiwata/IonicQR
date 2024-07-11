@@ -27,26 +27,38 @@ const Count = ({ onBack, location, data, camPaused, triggerParent }: any) => {
                 setBatchStash(res)
 
             } else {
-                saveData(res, false);
+                saveData(res, false, currentData);
             }
         }
     }
 
-    const handleBatchAlertClose = async (v: any) => {
-        console.log(v)
-        console.log(Array.from(Array(v).keys()))
+    const handleBatchAlertClose = (v: any) => {
+        let saveArray: any = []
+        const scanText = batchStash as any
 
-        Array.from(Array(v).keys()).forEach(() => {
-            saveData(batchStash, true)
+        Array.from(Array(parseInt(v)).keys()).forEach(() => {
+            const newData = {
+                task: scanText.getText(),
+                created: new Date().getTime(),
+                id: crypto.randomUUID()
+            }
+            saveArray.push(newData)
         })
+        setCurrentData(addData(saveArray, location, currentData))
         setBatchAlert(false)
         setIsAlertOpen(true)
     }
 
-    const saveData = async (res: any, batch: boolean) => {
+    const saveData = (res: any, batch: boolean, curData: any) => {
+        const newData = {
+            task: res.getText(),
+            created: new Date().getTime(),
+            id: crypto.randomUUID()
+        }
         setScanMsg(res.getText());
         !batch && setIsAlertOpen(true)
-        setCurrentData(await addData(res.getText(), location));
+        setCurrentData(addData(newData, location, curData));
+        console.log(currentData)
         triggerParent();
     }
 
