@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { addStore, setAppData, addSettingData } from "../store/reducers/DataSlice";
 
 const DATA_KEY = 'my-data'
-const USER_KEY = 'users';
 const SETTINGS_KEY = 'settings-data';
 
 export interface TodoItem {
@@ -88,8 +87,8 @@ export function useStorage() {
     }
 
     const checkUserExistence = async (userKey: string) => {
-        const users = await store?.get(USER_KEY) || [];
-        return users.includes(userKey)
+        const settings = await store?.get(SETTINGS_KEY) || [];
+        return settings.userList.filter((user: any) => user.name === userKey)
     }
 
     const setAppSetting = async (setting: any) => {
@@ -98,11 +97,26 @@ export function useStorage() {
     }
 
     const getData = async () => {
-        return await store?.get(DATA_KEY)
+        const freshData = await store?.get(DATA_KEY)
+        dispatch(setAppData(freshData))
+        return freshData
     }
 
     const getSettingData = async () => {
         return await store?.get(SETTINGS_KEY)
+    }
+
+    const editQty = async (index: number, newQty: number, location: string) => {
+        const currentData = await store?.get(DATA_KEY)
+        console.log(currentData)
+        const oldData = currentData[location][index].task.split(',')
+        oldData[3] = newQty
+        currentData[location][index].task = oldData.join(',')
+
+        dispatch(setAppData(currentData))
+        await store?.set(DATA_KEY, currentData)
+        return true
+
     }
 
 
@@ -116,6 +130,7 @@ export function useStorage() {
         setAppSetting,
         settingData,
         getData,
-        getSettingData
+        getSettingData,
+        editQty
     }
 }

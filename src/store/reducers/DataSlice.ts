@@ -1,9 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
+import Cookies from 'js-cookie';
 
 const initialState = {
     store: '',
     data: '',
-    settingData: ''
+    settingData: '',
+    currentUser: Cookies.get('username'),
+    cameraOff: false
 }
 
 
@@ -20,8 +23,16 @@ export const dataSlice: any = createSlice({
         addSettingData: (state: any, action: any) => {
             state.settingData = action.payload
         },
+
+        setCurrentUser: (state: any, action: any) => {
+            state.currentUser = action.payload
+        },
+
+        setCameraState: (state: any, action: any) => {
+            state.cameraOff = action.payload
+        },
     }
 });
 
-export const { addStore, setAppData, addSettingData } = dataSlice.actions;
+export const { addStore, setAppData, addSettingData, setCurrentUser, setCameraState } = dataSlice.actions;
 export default dataSlice.reducer

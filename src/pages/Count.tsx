@@ -6,8 +6,8 @@ import QRScanner from '../components/QRScanner';
 import { arrowBack } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 
-const Count = ({ onBack, location, data, camPaused, triggerParent }: any) => {
-    const { addData } = useStorage();
+const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
+    const { addData, editQty, getData } = useStorage();
     const [currentData, setCurrentData] = useState(data)
     const [isAlertOpen, setIsAlertOpen] = useState(false)
     const [scanMsg, setScanMsg] = useState('')
@@ -15,6 +15,9 @@ const Count = ({ onBack, location, data, camPaused, triggerParent }: any) => {
     const [scanMode, setScanMode] = useState('single')
     const [batchAlert, setBatchAlert] = useState(false)
     const [batchStash, setBatchStash] = useState()
+    const [editIndex, setEditIndex] = useState(0)
+    const [editAlert, setEditAlert] = useState(false)
+    const [isEditSuccess, setIsEditSuccess] = useState(false)
 
 
     const pushData = async (res: any) => {
@@ -40,7 +43,8 @@ const Count = ({ onBack, location, data, camPaused, triggerParent }: any) => {
             const newData = {
                 task: scanText.getText(),
                 created: new Date().getTime(),
-                id: crypto.randomUUID()
+                id: crypto.randomUUID(),
+                scanned_by: currentUser.name
             }
             saveArray.push(newData)
         })
@@ -49,11 +53,22 @@ const Count = ({ onBack, location, data, camPaused, triggerParent }: any) => {
         setIsAlertOpen(true)
     }
 
+    const handleEditAlertClose = (qty: number) => {
+        editQty(editIndex, qty, location).then(() => {
+            getData().then((res) => {
+                console.log(res)
+                setCurrentData(res)
+                setIsEditSuccess(true)
+            })
+        })
+    }
+
     const saveData = (res: any, batch: boolean, curData: any) => {
         const newData = {
             task: res.getText(),
             created: new Date().getTime(),
-            id: crypto.randomUUID()
+            id: crypto.randomUUID(),
+            scanned_by: currentUser.name
         }
         setScanMsg(res.getText());
         !batch && setIsAlertOpen(true)
@@ -91,7 +106,7 @@ const Count = ({ onBack, location, data, camPaused, triggerParent }: any) => {
                 </IonSegment>
 
                 <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                    <QRScanner invalidScan={invalidScan} paused={camPaused} handleScan={pushData} />
+                    <QRScanner invalidScan={invalidScan} handleScan={pushData} />
                 </IonItem>
 
                 <IonGrid placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
@@ -103,7 +118,7 @@ const Count = ({ onBack, location, data, camPaused, triggerParent }: any) => {
                     </IonRow>
                     {
                         currentData[location] && currentData[location].map((todo: any, key: any) => (
-                            <IonRow key={key} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                            <IonRow onClick={() => { setEditIndex(key); setEditAlert(true) }} key={key} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                                 {
                                     todo.task.split(",").map((item: any, key2: any) => <IonCol style={{ paddingTop: '10px', paddingBottom: '10px' }} key={key2} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{item}</IonCol>)
                                 }
@@ -121,6 +136,13 @@ const Count = ({ onBack, location, data, camPaused, triggerParent }: any) => {
                 buttons={['Close']}
                 onDidDismiss={() => setIsAlertOpen(false)}
             ></IonAlert>
+
+            <IonAlert
+                isOpen={isEditSuccess}
+                header="Successfully edited quantity"
+                buttons={['Close']}
+                onDidDismiss={() => setIsEditSuccess(false)}
+            ></IonAlert>
             <IonAlert
                 isOpen={batchAlert}
                 header="Please enter batch threshold"
@@ -136,6 +158,26 @@ const Count = ({ onBack, location, data, camPaused, triggerParent }: any) => {
                         text: 'Save',
                         handler: (alertData) => { //takes the data 
                             handleBatchAlertClose(alertData.batchCount);
+                        }
+                    }]
+                }
+            ></IonAlert>
+
+            <IonAlert
+                isOpen={editAlert}
+                header="Edit Quantity"
+                inputs={[
+                    {
+                        name: 'itemQty',
+                        type: 'number',
+                        placeholder: 'Enter new quantity'
+                    }
+                ]}
+                buttons={
+                    [{
+                        text: 'Save',
+                        handler: (alertData) => { //takes the data 
+                            handleEditAlertClose(alertData.itemQty);
                         }
                     }]
                 }

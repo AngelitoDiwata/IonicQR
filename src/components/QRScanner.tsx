@@ -1,11 +1,15 @@
 import { IonAlert } from "@ionic/react";
 import { useEffect, useState } from "react";
 import { useZxing } from "react-zxing";
+import { useSelector } from "react-redux";
 
-export default function QRScanner({ handleScan, paused, invalidScan }: any) {
+export default function QRScanner({ handleScan, invalidScan }: any) {
 
+    const { cameraOff } = useSelector((state: any) => state.data)
     const [isAlertOpen, setIsAlertOpen] = useState(false);
     const [scanMsg, setScanMsg] = useState("");
+
+
 
     const { ref } = useZxing({
         onDecodeResult(result) {
@@ -13,7 +17,7 @@ export default function QRScanner({ handleScan, paused, invalidScan }: any) {
                 handleScan(result)
             }
         },
-        paused
+        paused: cameraOff
     });
 
     useEffect(() => {

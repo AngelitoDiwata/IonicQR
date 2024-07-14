@@ -6,7 +6,7 @@ import { arrowBack, listCircle } from 'ionicons/icons';
 import { useState } from 'react';
 import Count from './Count';
 
-const Scan = ({ onBack, settingData, data, camPaused, triggerParent }: any) => {
+const Scan = ({ onBack, settingData, data, triggerParent, currentUser }: any) => {
   const [location, setLocation] = useState(null)
   const [invalidScan, setInvalidScan] = useState(false)
   const [currentData, setCurrentData] = useState(data)
@@ -34,7 +34,7 @@ const Scan = ({ onBack, settingData, data, camPaused, triggerParent }: any) => {
         </IonToolbar>
         <IonContent className="ion-padding" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-            <QRScanner invalidScan={invalidScan} paused={camPaused} handleScan={pushData} />
+            <QRScanner invalidScan={invalidScan} handleScan={pushData} />
           </IonItem>
           <IonList placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
             {
@@ -47,7 +47,7 @@ const Scan = ({ onBack, settingData, data, camPaused, triggerParent }: any) => {
             }
           </IonList>
         </IonContent>
-      </IonPage> : <Count triggerParent={triggerParent} camPaused={camPaused} data={currentData} onBack={(data: any) => { setCurrentData(data); setInvalidScan(false); setLocation(null) }} location={location} />
+      </IonPage> : <Count currentUser={currentUser} triggerParent={triggerParent} data={currentData} onBack={(data: any) => { setCurrentData(data); setInvalidScan(false); setLocation(null) }} location={location} />
   );
 };
 

@@ -5,22 +5,28 @@ import Scan from './Scan';
 import Login from './Login';
 import { useStorage } from '../hooks/useStorage';
 import Settings from './Settings';
+import { useDispatch } from 'react-redux';
+import { setCameraState } from "../store/reducers/DataSlice";
 
-export default function MainMenu({ onLogOut }: any) {
+export default function MainMenu({ onLogOut, currentUser, bypass }: any) {
     const [repaint, setRepaint] = useState(false)
     const { data, clearData, settingData, store, SETTINGS_KEY } = useStorage();
     const [currentData, setCurrentData] = useState()
     const [selectedComponent, setSelectedComponent] = useState('')
-    const [camPaused, setCampaused] = useState(false)
-
+    const [camPaused, setCampaused] = useState(bypass)
+    const dispatch = useDispatch();
     let components: { [key: string]: any } = {
-        "Scan": <Scan triggerParent={() => setRepaint(!repaint)} camPaused={camPaused} data={currentData || data} settingData={settingData} onBack={(res: any) => { setCurrentData(res); setCampaused(true); setSelectedComponent('') }} />,
+        "Scan": <Scan currentUser={currentUser} triggerParent={() => setRepaint(!repaint)} data={currentData || data} settingData={settingData} onBack={(res: any) => { setCurrentData(res); setCampaused(true); setSelectedComponent('') }} />,
         "Login": <Login />,
         "Settings": <Settings settingData={settingData} onBack={() => setSelectedComponent('')} />
     }
 
     const [currentComponent, setCurrentComponent] = useState(components[selectedComponent])
 
+    useEffect(() => {
+        dispatch(setCameraState(camPaused))
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [camPaused])
 
     useEffect(() => {
         setCampaused(false)
@@ -31,7 +37,7 @@ export default function MainMenu({ onLogOut }: any) {
         } else if (selectedComponent === 'Scan') {
             getSettings().then((res) => {
                 setCampaused(false)
-                setCurrentComponent(<Scan triggerParent={() => setRepaint(!repaint)} camPaused={camPaused} data={currentData || data} settingData={res} onBack={(res: any) => { setCurrentData(res); setCampaused(true); setSelectedComponent('') }} />)
+                setCurrentComponent(<Scan currentUser={currentUser} triggerParent={() => setRepaint(!repaint)} data={currentData || data} settingData={res} onBack={(res: any) => { setCurrentData(res); setCampaused(true); setSelectedComponent('') }} />)
             })
         } else {
             setCurrentComponent(components[selectedComponent])
@@ -73,12 +79,17 @@ export default function MainMenu({ onLogOut }: any) {
                 <IonButton size='large' disabled expand='block' onClick={() => setSelectedComponent('Scan')} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                     <IonIcon slot='start' icon={logOut} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonIcon> Out from Warehouse
                 </IonButton>
-                <IonButton size='large' expand='block' onClick={() => postData()} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                    <IonIcon slot='start' icon={document} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonIcon> Extract Data
-                </IonButton>
-                <IonButton size='large' expand='block' onClick={() => setSelectedComponent('Settings')} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                    <IonIcon slot='start' icon={cog} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonIcon> Settings
-                </IonButton>
+                {
+                    currentUser.type === "Administrator" && (
+                        <>
+                            <IonButton size='large' expand='block' onClick={() => postData()} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                                <IonIcon slot='start' icon={document} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonIcon> Extract Data
+                            </IonButton>
+                            <IonButton size='large' expand='block' onClick={() => setSelectedComponent('Settings')} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                                <IonIcon slot='start' icon={cog} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonIcon> Settings
+                            </IonButton>
+                        </>)
+                }
                 <IonButton size='large' fill="outline" color='danger' expand='block' onClick={onLogOut} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                     <IonIcon slot='start' icon={power} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonIcon> Log out
                 </IonButton>
