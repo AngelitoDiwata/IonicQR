@@ -29,8 +29,8 @@ export function useStorage() {
             dispatch(setAppData(storedData))
 
             const storedSettings = await store.get(SETTINGS_KEY) || {
-                appIP: '',
                 locationList: [],
+                userList: []
             };
             dispatch(addSettingData(storedSettings))
 

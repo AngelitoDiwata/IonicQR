@@ -3,7 +3,7 @@ import { arrowBack } from "ionicons/icons";
 import { useStorage } from "../hooks/useStorage";
 import { useEffect, useState } from "react";
 
-export default function Settings({ onBack, settingData }: any) {
+export default function Settings({ onBack, settingData, onSetup }: any) {
 
     const { setAppSetting } = useStorage();
     const [currentLocation, setCurrentLocation] = useState();
@@ -20,8 +20,10 @@ export default function Settings({ onBack, settingData }: any) {
     const [isErrorAlertOpen, setIsErrorAlertOpen] = useState(false);
     const [isUserErrorAlertOpen, setIsUserErrorAlertOpen] = useState(false)
     const [isDBSaveAlertOpen, setIsDBSaveAlertOpen] = useState(false);
+    const [backDisabled, setBackDisabled] = useState(onSetup)
 
     const assembleAppSetting = () => {
+        setBackDisabled(false)
         return {
             locationList,
             userList
@@ -107,9 +109,11 @@ export default function Settings({ onBack, settingData }: any) {
     return (
         <IonPage placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
             <IonToolbar placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                <IonButtons onClick={onBack} slot="start" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                    <IonIcon className="ion-padding" size="medium" icon={arrowBack} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonIcon>
-                </IonButtons>
+                {
+                    !backDisabled && <IonButtons onClick={onBack} slot="start" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                        <IonIcon className="ion-padding" size="medium" icon={arrowBack} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonIcon>
+                    </IonButtons>
+                }
                 <IonTitle placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Settings</IonTitle>
             </IonToolbar>
             <IonContent className="ion-padding" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
