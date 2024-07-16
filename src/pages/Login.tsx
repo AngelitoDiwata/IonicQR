@@ -5,8 +5,6 @@ import { useStorage } from '../hooks/useStorage';
 import MainMenu from './MainMenu';
 import Cookies from 'js-cookie';
 import { arrowBack } from 'ionicons/icons';
-import { setCameraState } from '../store/reducers/DataSlice';
-import { useDispatch } from 'react-redux';
 
 export default function Login({ onLogout }: any) {
 
@@ -15,7 +13,6 @@ export default function Login({ onLogout }: any) {
     const [isAlertOpen, setIsAlertOpen] = useState(false);
     const [currentUser, setCurrentUser] = useState({ name: '', type: '' });
     const [isBypass, setIsBypass] = useState(false)
-    const dispatch = useDispatch()
 
     const handleLoginScan = (data: any) => {
         setUserLoggedIn(true)
