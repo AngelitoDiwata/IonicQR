@@ -38,7 +38,7 @@ export default function Login({ onLogout }: any) {
         if (Cookies.get('userData')) {
             setCurrentUser(JSON.parse(Cookies.get('userData') as any))
             setIsBypass(true)
-            dispatch(setCameraState(false))
+            //dispatch(setCameraState(false))
             setUserLoggedIn(true)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
