@@ -5,6 +5,8 @@ import { useStorage } from '../hooks/useStorage';
 import MainMenu from './MainMenu';
 import Cookies from 'js-cookie';
 import { arrowBack } from 'ionicons/icons';
+import { setCameraState } from '../store/reducers/DataSlice';
+import { useDispatch } from 'react-redux';
 
 export default function Login({ onLogout }: any) {
 
@@ -13,17 +15,16 @@ export default function Login({ onLogout }: any) {
     const [isAlertOpen, setIsAlertOpen] = useState(false);
     const [currentUser, setCurrentUser] = useState({ name: '', type: '' });
     const [isBypass, setIsBypass] = useState(false)
+    const dispatch = useDispatch()
 
     const handleLoginScan = (data: any) => {
         setUserLoggedIn(true)
         checkUserExistence(data.getText()).then((res) => {
             if (res.length > 0) {
-                console.log(res)
                 setUserLoggedIn(true)
                 setCurrentUser(res[0])
                 const stringData = JSON.stringify(res[0]);
                 Cookies.set('userData', stringData);
-                console.log(JSON.parse(Cookies.get('userData') as any));
                 setIsAlertOpen(true)
             } else {
                 setUserLoggedIn(false)
@@ -37,6 +38,7 @@ export default function Login({ onLogout }: any) {
         if (Cookies.get('userData')) {
             setCurrentUser(JSON.parse(Cookies.get('userData') as any))
             setIsBypass(true)
+            dispatch(setCameraState(false))
             setUserLoggedIn(true)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -54,7 +56,7 @@ export default function Login({ onLogout }: any) {
                     </IonToolbar>
                     <IonContent fullscreen placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                         <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                            <QRScanner handleScan={handleLoginScan} />
+                            <QRScanner paused={isBypass} handleScan={handleLoginScan} />
                         </IonItem>
                     </IonContent>
                 </IonPage> : <MainMenu bypass={isBypass} currentUser={currentUser} onLogOut={() => onLogout(false)} />

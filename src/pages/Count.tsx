@@ -56,7 +56,6 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
     const handleEditAlertClose = (qty: number) => {
         editQty(editIndex, qty, location).then(() => {
             getData().then((res) => {
-                console.log(res)
                 setCurrentData(res)
                 setIsEditSuccess(true)
             })
@@ -73,7 +72,6 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
         setScanMsg(res.getText());
         !batch && setIsAlertOpen(true)
         setCurrentData(addData(newData, location, curData));
-        console.log(currentData)
         triggerParent();
     }
 

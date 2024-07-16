@@ -39,25 +39,9 @@ export function useStorage() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    // const addData = async (task: string, location: string, currentData: any) => {
-    //     const newData = {
-    //         task,
-    //         created: new Date().getTime(),
-    //         id: crypto.randomUUID()
-    //     }
-    //     const dataCopy = { ...currentData }
-    //     dataCopy[location] ? dataCopy[location].push(newData) : dataCopy[location] = [newData]
-
-    //     dispatch(setAppData(dataCopy))
-    //     console.log(dataCopy)
-    //     store?.set(DATA_KEY, data)
-    //     return dataCopy
-    // }
-
     const addData = (newData: any, location: string, currentData: any) => {
 
         let dataCopy = Object.assign({}, currentData)
-        console.log(dataCopy)
         if (dataCopy[location] !== undefined) {
             if (newData.task) {
                 dataCopy[location] = [...dataCopy[location], newData]
@@ -65,12 +49,12 @@ export function useStorage() {
                 dataCopy[location] = [...dataCopy[location], ...newData]
             }
 
-            console.log(dataCopy)
+
             dispatch(setAppData(dataCopy))
             store?.set(DATA_KEY, dataCopy)
         } else if (dataCopy[location] === undefined) {
             dataCopy = { ...dataCopy, [location]: newData.task ? [newData] : [...newData] }
-            console.log(dataCopy)
+
             dispatch(setAppData(dataCopy))
             store?.set(DATA_KEY, dataCopy)
         }
@@ -108,7 +92,6 @@ export function useStorage() {
 
     const editQty = async (index: number, newQty: number, location: string) => {
         const currentData = await store?.get(DATA_KEY)
-        console.log(currentData)
         const oldData = currentData[location][index].task.split(',')
         oldData[3] = newQty
         currentData[location][index].task = oldData.join(',')

@@ -19,7 +19,7 @@ export default function Settings({ onBack, settingData, onSetup }: any) {
     const [isUserAlertOpen, setIsUserAlertOpen] = useState(false)
     const [isErrorAlertOpen, setIsErrorAlertOpen] = useState(false);
     const [isUserErrorAlertOpen, setIsUserErrorAlertOpen] = useState(false)
-    const [isDBSaveAlertOpen, setIsDBSaveAlertOpen] = useState(false);
+    const [isEmptyAlertOpen, setIsEmptyAlertOpen] = useState(false);
     const [backDisabled, setBackDisabled] = useState(onSetup)
 
     const assembleAppSetting = () => {
@@ -30,28 +30,32 @@ export default function Settings({ onBack, settingData, onSetup }: any) {
         }
     }
     const addToLocationList = () => {
-        if (locationList !== undefined && checkDuplicates(locationList, currentLocation)) {
-            setIsErrorAlertOpen(true)
-        }
-        else if (editKey !== undefined) {
-            editLocationList()
-        } else {
-            const currentList = locationList || []
-            setLocationList([...currentList, currentLocation as never])
-            setIsAlertOpen(true)
+        if (currentLocation && (currentLocation as string).trim() !== '') {
+            if (locationList !== undefined && checkDuplicates(locationList, currentLocation)) {
+                setIsErrorAlertOpen(true)
+            }
+            else if (editKey !== undefined) {
+                editLocationList()
+            } else {
+                const currentList = locationList || []
+                setLocationList([...currentList, currentLocation as never])
+                setIsAlertOpen(true)
+            }
         }
     }
 
     const addToUserList = () => {
-        if (userList !== undefined && checkDuplicates(userList, currentUser)) {
-            setIsUserErrorAlertOpen(true)
-        }
-        else if (userEditKey !== undefined) {
-            editLocationList()
-        } else {
-            const currentList = userList || []
-            setUserList([...currentList, { name: currentUser, type: userType } as never])
-            setIsUserAlertOpen(true)
+        if ((currentUser && (currentUser as string).trim() !== '' && userType)) {
+            if (userList !== undefined && checkDuplicates(userList, currentUser)) {
+                setIsUserErrorAlertOpen(true)
+            }
+            else if (userEditKey !== undefined) {
+                editUserList()
+            } else {
+                const currentList = userList || []
+                setUserList([...currentList, { name: currentUser, type: userType } as never])
+                setIsUserAlertOpen(true)
+            }
         }
     }
     const closeSuccessAlert = () => {
@@ -75,6 +79,22 @@ export default function Settings({ onBack, settingData, onSetup }: any) {
             setCurrentLocation(undefined)
         }
     }
+
+    const editUserList = () => {
+        if (userList !== undefined && checkDuplicates(userList, currentUser)) {
+            setIsUserErrorAlertOpen(true)
+        }
+        else if (userEditKey !== undefined) {
+            const newUserList = [...userList];
+            newUserList[userEditKey] = { name: currentUser, type: userType };
+            setUserList(newUserList)
+            setIsUserAlertOpen(true)
+        }
+
+        setUserEditKey(undefined)
+        setCurrentUser(undefined)
+        setUserType(undefined)
+    }
     const checkDuplicates = (array: any[], value: string | undefined) => {
         return array.includes(value)
     }
@@ -90,6 +110,25 @@ export default function Settings({ onBack, settingData, onSetup }: any) {
         newUserList.splice(key, 1);
         setLocationList(newUserList)
     }
+
+    const validateDataBeforeSave = () => {
+        if (locationList && userList) {
+            if (locationList.length === 0 || userList.length === 0) {
+                setIsEmptyAlertOpen(true)
+            } else {
+                setAppSetting(assembleAppSetting())
+            }
+
+            onSetup && onBack(false, true)
+        } else {
+            alert('Please save Location or User before proceeding')
+        }
+    }
+
+    useEffect(() => {
+        (userList && locationList && !onSetup) && validateDataBeforeSave()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [userList, locationList])
 
     useEffect(() => {
         if (editKey !== undefined) {
@@ -110,11 +149,11 @@ export default function Settings({ onBack, settingData, onSetup }: any) {
         <IonPage placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
             <IonToolbar placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                 {
-                    !backDisabled && <IonButtons onClick={onBack} slot="start" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    !backDisabled && <IonButtons onClick={() => onBack(false, true)} slot="start" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                         <IonIcon className="ion-padding" size="medium" icon={arrowBack} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonIcon>
                     </IonButtons>
                 }
-                <IonTitle placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Settings</IonTitle>
+                <IonTitle placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{onSetup ? 'Initial Setup' : 'Settings'}</IonTitle>
             </IonToolbar>
             <IonContent className="ion-padding" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
 
@@ -146,7 +185,7 @@ export default function Settings({ onBack, settingData, onSetup }: any) {
                 <h4>List of users: </h4>
                 <IonItemDivider placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                     <IonInput value={currentUser} onIonChange={(e) => setCurrentUser(e.detail.value! as never)} placeholder="Enter user name" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonInput>
-                    <IonSelect onIonChange={(e) => setUserType(e.detail.value! as never)} placeholder="User Type" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    <IonSelect value={userType} onIonChange={(e) => setUserType(e.detail.value! as never)} placeholder="User Type" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                         <IonSelectOption value="User" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>User</IonSelectOption>
                         <IonSelectOption value="Administrator" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Administrator</IonSelectOption>
                     </IonSelect>
@@ -172,14 +211,19 @@ export default function Settings({ onBack, settingData, onSetup }: any) {
 
                 </IonList>
 
+
+
+
             </IonContent>
-            <IonFooter className="ion-padding" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                <IonToolbar placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                    <IonButton size='large' expand='block' onClick={() => { setAppSetting(assembleAppSetting()); setIsDBSaveAlertOpen(true); }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                        Save
-                    </IonButton>
-                </IonToolbar>
-            </IonFooter>
+            {
+                (onSetup) && <IonFooter className="ion-padding" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    <IonToolbar placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                        <IonButton size='large' expand='block' onClick={validateDataBeforeSave} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                            Save and Go to Main menu
+                        </IonButton>
+                    </IonToolbar>
+                </IonFooter>
+            }
             <IonAlert
                 isOpen={isAlertOpen}
                 header={`Successfully ${editKey !== undefined ? 'updated' : 'added'} location`}
@@ -211,12 +255,13 @@ export default function Settings({ onBack, settingData, onSetup }: any) {
                 buttons={['Okay']}
                 onDidDismiss={() => setIsUserErrorAlertOpen(false)}
             ></IonAlert>
+
             <IonAlert
-                isOpen={isDBSaveAlertOpen}
-                header="Settings saved!"
-                subHeader="You are going back to the main menu"
+                isOpen={isEmptyAlertOpen}
+                header="Please input locations/users"
+                subHeader="Cannot proceed without set of locations/users"
                 buttons={['Okay']}
-                onDidDismiss={() => { onBack(); setIsDBSaveAlertOpen(false) }}
+                onDidDismiss={() => { setIsEmptyAlertOpen(false) }}
             ></IonAlert>
         </IonPage>
     )

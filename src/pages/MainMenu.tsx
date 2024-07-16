@@ -47,16 +47,20 @@ export default function MainMenu({ onLogOut, currentUser, bypass }: any) {
     }, [selectedComponent])
 
     const postData = () => {
-        const jsonString = JSON.stringify(data, null, 2);
-        const blob = new Blob([jsonString], { type: 'application/json' });
-        const link = window.document.createElement('a');
-        link.download = `${new Date().toDateString()}_extract.json`;
-        link.href = window.URL.createObjectURL(blob);
-        window.document.body.appendChild(link);
-        link.click();
-        window.document.body.removeChild(link);
-        clearData();
-        alert("successsfully exported Data")
+        if (data.length !== 0) {
+            const jsonString = JSON.stringify(data, null, 2);
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const link = window.document.createElement('a');
+            link.download = `${new Date().toDateString()}_extract.json`;
+            link.href = window.URL.createObjectURL(blob);
+            window.document.body.appendChild(link);
+            link.click();
+            window.document.body.removeChild(link);
+            clearData();
+            alert("successsfully exported Data")
+        } else {
+            alert("No data to export. \n \n Please scan using Basic Scan and try again.")
+        }
     };
 
 
