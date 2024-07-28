@@ -55,12 +55,14 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
     }
 
     const handleEditAlertClose = (qty: number) => {
-        editQty(editIndex, qty, location).then(() => {
-            getData().then((res) => {
-                setCurrentData(res)
-                setIsEditSuccess(true)
+        if (qty > 0) {
+            editQty(editIndex, qty, location).then(() => {
+                getData().then((res) => {
+                    setCurrentData(res)
+                    setIsEditSuccess(true)
+                })
             })
-        })
+        }
     }
 
     const saveData = (res: any, batch: boolean, curData: any) => {
@@ -117,7 +119,7 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
                     <QRScanner invalidScan={invalidScan} handleScan={pushData} />
                 </IonItem>
 
-                <IonGrid style={{ overflow: 'scroll', height: '100%' }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                <IonGrid style={{ overflow: 'scroll', height: '50%' }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
 
                     <IonRow style={{ top: '0', zIndex: 20, position: 'sticky', backgroundColor: 'white', color: 'black', borderRadius: '5px', boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)' }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                         {
@@ -126,7 +128,7 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
                     </IonRow>
                     {
                         sortedData && sortedData.map((todo: any, key: any) => (
-                            <IonRow onClick={() => { setEditIndex(key); setEditAlert(true) }} key={key} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                            <IonRow onClick={() => { setEditIndex(todo.id); setEditAlert(true) }} key={key} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                                 {
                                     lastValueSwitcher(todo.scan_data.split(";")).map((item: any, key2: any) => <IonCol style={{ paddingTop: '10px', paddingBottom: '10px' }} key={key2} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{item}</IonCol>)
                                 }
@@ -174,6 +176,7 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
             <IonAlert
                 isOpen={editAlert}
                 header="Edit Quantity"
+                onDidDismiss={() => setEditAlert(false)}
                 inputs={[
                     {
                         name: 'itemQty',

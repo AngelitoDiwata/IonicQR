@@ -92,9 +92,15 @@ export function useStorage() {
 
     const editQty = async (index: number, newQty: number, location: string) => {
         const currentData = await store?.get(DATA_KEY)
-        const oldData = currentData[location][index].scan_data.split(';')
-        oldData[3] = newQty
-        currentData[location][index].scan_data = oldData.join(';')
+        let curIndex: any;
+        const oldData = currentData[location].map((item: any, ind: any) => {
+            if (item.id === index) {
+                curIndex = ind
+            }
+            return item
+        }).filter((item: any) => item.id === index)[0].scan_data.split(';')
+        oldData[1] = `${newQty}`
+        currentData[location][curIndex].scan_data = oldData.join(';')
 
         dispatch(setAppData(currentData))
         await store?.set(DATA_KEY, currentData)

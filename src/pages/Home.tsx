@@ -58,7 +58,7 @@ function Home() {
                 <IonContent className="ion-padding" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                     <IonIcon icon={qrCodeOutline} style={{ marginLeft: 'auto', marginRight: 'auto', display: 'block', width: '70%', height: '60%' }} size="large" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonIcon>
                     <h1 style={{ margin: '20px', textAlign: 'center' }}> QR Counter </h1>
-                    <IonButton size='large' style={{ marginLeft: 'auto', marginRight: 'auto', display: 'block', width: '50%' }} onClick={() => setLoginSelected(true)} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Scan to Log in</IonButton>
+                    <IonButton size='large' style={{ marginLeft: 'auto', marginRight: 'auto', display: 'block', width: '70%' }} onClick={() => setLoginSelected(true)} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Scan to Log in</IonButton>
                 </IonContent>
             </IonPage>
     );
