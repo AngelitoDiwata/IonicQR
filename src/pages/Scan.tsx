@@ -56,14 +56,14 @@ const Scan = ({ onBack, settingData, data, triggerParent, currentUser }: any) =>
               <IonInput value={searchLocation} onIonChange={(e) => setSearchlocation(e.detail.value! as never)} placeholder="Search for location" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonInput>
             </IonItem>
 
-            <IonList placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <IonList style={{ overflow: 'scroll', height: '50%' }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               {
                 filterLocationList().length > 0 ? filterLocationList().map((location: any, key: any) =>
                 (<IonItem key={key} onClick={() => setLocation(location)} button={true} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                   <IonIcon color="danger" slot="start" icon={listCircle} size="large" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonIcon>
                   <IonLabel placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{location}</IonLabel>
-                  <IonNote style={{ fontSize: '12px', fontWeight: 'bold' }} slot="end" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>data: {currentData[location] ? currentData[location].length : 0}</IonNote>
-                  <IonNote style={{ fontSize: '12px', fontWeight: 'bold' }} slot="end" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Σ: {currentData[location] ? sigmaQty(currentData[location]) : 0}</IonNote>
+                  <IonNote style={{ fontSize: '12px', fontWeight: 'bold' }} slot="end" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>rows: {currentData[location] ? currentData[location].length : 0}</IonNote>
+                  <IonNote style={{ fontSize: '12px', fontWeight: 'bold' }} slot="end" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Σ qty: {currentData[location] ? sigmaQty(currentData[location]) : 0}</IonNote>
                 </IonItem>)) : <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Wow, such empty 🤷🏻‍♂️</IonItem>
               }
             </IonList>

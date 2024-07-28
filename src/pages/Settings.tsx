@@ -162,7 +162,7 @@ export default function Settings({ onBack, settingData, onSetup }: any) {
                     <IonInput value={currentLocation} onIonChange={(e) => setCurrentLocation(e.detail.value! as never)} placeholder="Enter Location/Lot No:" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonInput>
                     <IonButton onClick={addToLocationList} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{editKey !== undefined ? 'Update' : 'Add'}</IonButton>
                 </IonItemDivider>
-                <IonList placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                <IonList style={{ overflow: 'scroll', height: '40%' }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                     {
                         (locationList && locationList.length > 0) && locationList.map((res: any, key: any) => {
                             return (
@@ -191,7 +191,7 @@ export default function Settings({ onBack, settingData, onSetup }: any) {
                     </IonSelect>
                     <IonButton onClick={addToUserList} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{userEditKey !== undefined ? 'Update' : 'Add'}</IonButton>
                 </IonItemDivider>
-                <IonList placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                <IonList style={{ overflow: 'scroll', height: '40%' }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                     {
                         (userList && userList.length > 0) && userList.map((res: any, key: any) => {
                             return (
