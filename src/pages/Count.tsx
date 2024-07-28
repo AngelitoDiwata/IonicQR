@@ -91,6 +91,9 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    const sortedData: any = currentData[location] ? [...currentData[location]].sort((a: any, b: any) => b.created - a.created) : [];
+
+
 
     return (
         <IonPage placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
@@ -122,7 +125,7 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
                         }
                     </IonRow>
                     {
-                        currentData[location] && currentData[location].map((todo: any, key: any) => (
+                        sortedData && sortedData.map((todo: any, key: any) => (
                             <IonRow onClick={() => { setEditIndex(key); setEditAlert(true) }} key={key} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                                 {
                                     lastValueSwitcher(todo.scan_data.split(";")).map((item: any, key2: any) => <IonCol style={{ paddingTop: '10px', paddingBottom: '10px' }} key={key2} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{item}</IonCol>)

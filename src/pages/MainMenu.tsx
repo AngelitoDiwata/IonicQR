@@ -48,7 +48,7 @@ export default function MainMenu({ onLogOut, currentUser, bypass }: any) {
 
     const postData = () => {
         if (data.length !== 0) {
-            const jsonString = JSON.stringify(data, null, 2);
+            const jsonString = JSON.stringify(sortDataBeforeExport(data), null, 2);
             const blob = new Blob([jsonString], { type: 'application/json' });
             const link = window.document.createElement('a');
             link.download = `${new Date().toDateString()}_extract.json`;
@@ -62,6 +62,21 @@ export default function MainMenu({ onLogOut, currentUser, bypass }: any) {
             alert("No data to export. \n \n Please scan using Basic Scan and try again.")
         }
     };
+
+    const sortDataBeforeExport = (data: any) => {
+        let newData = { ...data }
+        Object.keys(newData).forEach((location: string) => {
+
+            console.log([...newData[location]].sort((a: any, b: any) => b.created - a.created))
+            newData[location] = [...newData[location]].sort((a: any, b: any) => b.created - a.created).map((item: any) => {
+                let newItem = { ...item }
+                newItem.created = new Date(item.created).toUTCString()
+                return newItem
+            })
+        })
+
+        return newData
+    }
 
 
     const getSettings = async () => {
