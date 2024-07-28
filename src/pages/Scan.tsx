@@ -24,6 +24,11 @@ const Scan = ({ onBack, settingData, data, triggerParent, currentUser }: any) =>
     return settingData.locationList.includes(code)
   }
 
+  const sigmaQty = (data: any[]) => {
+    return data.map((data: any) => parseInt(data.scan_data.split(';')[1]))
+      .reduce((data: any, acc: any) => data + acc)
+  }
+
   return (
     !settingData.locationList ?
       <Settings settingData={settingData} onBack={() => onBack(currentData)} /> :
@@ -45,7 +50,8 @@ const Scan = ({ onBack, settingData, data, triggerParent, currentUser }: any) =>
                 (<IonItem key={key} onClick={() => setLocation(location)} button={true} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                   <IonIcon color="danger" slot="start" icon={listCircle} size="large" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonIcon>
                   <IonLabel placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{location}</IonLabel>
-                  <IonNote slot="end" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>qty: {currentData[location] ? currentData[location].length : 0}</IonNote>
+                  <IonNote style={{ fontSize: '12px', fontWeight: 'bold' }} slot="end" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>data: {currentData[location] ? currentData[location].length : 0}</IonNote>
+                  <IonNote style={{ fontSize: '12px', fontWeight: 'bold' }} slot="end" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Σ: {currentData[location] ? sigmaQty(currentData[location]) : 0}</IonNote>
                 </IonItem>))
               }
             </IonList>
