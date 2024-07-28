@@ -18,6 +18,7 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
     const [editIndex, setEditIndex] = useState(0)
     const [editAlert, setEditAlert] = useState(false)
     const [isEditSuccess, setIsEditSuccess] = useState(false)
+    const [dateScanned, setDateScanned] = useState(new Date().toLocaleDateString())
 
 
     const pushData = async (res: any) => {
@@ -69,6 +70,7 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
             id: crypto.randomUUID(),
             scanned_by: currentUser.name
         }
+        setDateScanned(`${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`)
         setScanMsg(res.getText());
         !batch && setIsAlertOpen(true)
         setCurrentData(addData(newData, location, curData));
@@ -134,7 +136,7 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
             <IonAlert
                 isOpen={isAlertOpen}
                 header="Successful Scan"
-                subHeader="data scanned:"
+                subHeader={`${dateScanned}`}
                 message={scanMsg}
                 buttons={['Close']}
                 onDidDismiss={() => setIsAlertOpen(false)}
