@@ -186,7 +186,7 @@ export default function Settings({ onBack, settingData, onSetup }: any) {
                 <IonItemDivider placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                     <IonInput value={currentUser} onIonChange={(e) => setCurrentUser(e.detail.value! as never)} placeholder="Enter user name" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonInput>
                     <IonSelect value={userType} onIonChange={(e) => setUserType(e.detail.value! as never)} placeholder="User Type" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                        <IonSelectOption value="User" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>User</IonSelectOption>
+                        {(userList && userList.map((data: any) => data.type).includes('Administrator')) && <IonSelectOption value="User" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>User</IonSelectOption>}
                         <IonSelectOption value="Administrator" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Administrator</IonSelectOption>
                     </IonSelect>
                     <IonButton onClick={addToUserList} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{userEditKey !== undefined ? 'Update' : 'Add'}</IonButton>
