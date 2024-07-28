@@ -41,7 +41,7 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
 
         Array.from(Array(parseInt(v)).keys()).forEach(() => {
             const newData = {
-                task: scanText.getText(),
+                scan_data: scanText.getText(),
                 created: new Date().getTime(),
                 id: crypto.randomUUID(),
                 scanned_by: currentUser.name
@@ -64,7 +64,7 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
 
     const saveData = (res: any, batch: boolean, curData: any) => {
         const newData = {
-            task: res.getText(),
+            scan_data: res.getText(),
             created: new Date().getTime(),
             id: crypto.randomUUID(),
             scanned_by: currentUser.name
@@ -76,7 +76,11 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
     }
 
     const checkValidQRCode = (code: string) => {
-        return code.split(',').length === 4
+        return code.split(';').length === 4
+    }
+
+    const lastValueSwitcher = (arr: any[]) => {
+        return [arr[0], arr[2], arr[3], arr[1]]
     }
 
     useEffect(() => {
@@ -84,6 +88,7 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
 
     return (
         <IonPage placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
@@ -111,14 +116,14 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
 
                     <IonRow style={{ backgroundColor: 'white', color: 'black', borderRadius: '5px', boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)' }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                         {
-                            ['PRDCODE', 'UNIT', 'LOT#', 'QTY'].map((item: any, key: any) => (<IonCol style={{ fontWeight: 'bold' }} key={key} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{item}</IonCol>))
+                            ['PRDCODE', 'UOM', 'JO_NO', 'QTY'].map((item: any, key: any) => (<IonCol style={{ fontWeight: 'bold' }} key={key} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{item}</IonCol>))
                         }
                     </IonRow>
                     {
                         currentData[location] && currentData[location].map((todo: any, key: any) => (
                             <IonRow onClick={() => { setEditIndex(key); setEditAlert(true) }} key={key} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                                 {
-                                    todo.task.split(",").map((item: any, key2: any) => <IonCol style={{ paddingTop: '10px', paddingBottom: '10px' }} key={key2} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{item}</IonCol>)
+                                    lastValueSwitcher(todo.scan_data.split(";")).map((item: any, key2: any) => <IonCol style={{ paddingTop: '10px', paddingBottom: '10px' }} key={key2} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{item}</IonCol>)
                                 }
                             </IonRow>
                         ))

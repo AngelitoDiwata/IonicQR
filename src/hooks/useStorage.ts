@@ -7,7 +7,7 @@ const DATA_KEY = 'my-data'
 const SETTINGS_KEY = 'settings-data';
 
 export interface TodoItem {
-    task: string;
+    scan_data: string;
     created: number;
     id: string;
 }
@@ -43,7 +43,7 @@ export function useStorage() {
 
         let dataCopy = Object.assign({}, currentData)
         if (dataCopy[location] !== undefined) {
-            if (newData.task) {
+            if (newData.scan_data) {
                 dataCopy[location] = [...dataCopy[location], newData]
             } else {
                 dataCopy[location] = [...dataCopy[location], ...newData]
@@ -53,7 +53,7 @@ export function useStorage() {
             dispatch(setAppData(dataCopy))
             store?.set(DATA_KEY, dataCopy)
         } else if (dataCopy[location] === undefined) {
-            dataCopy = { ...dataCopy, [location]: newData.task ? [newData] : [...newData] }
+            dataCopy = { ...dataCopy, [location]: newData.scan_data ? [newData] : [...newData] }
 
             dispatch(setAppData(dataCopy))
             store?.set(DATA_KEY, dataCopy)
@@ -92,9 +92,9 @@ export function useStorage() {
 
     const editQty = async (index: number, newQty: number, location: string) => {
         const currentData = await store?.get(DATA_KEY)
-        const oldData = currentData[location][index].task.split(',')
+        const oldData = currentData[location][index].scan_data.split(';')
         oldData[3] = newQty
-        currentData[location][index].task = oldData.join(',')
+        currentData[location][index].scan_data = oldData.join(';')
 
         dispatch(setAppData(currentData))
         await store?.set(DATA_KEY, currentData)
