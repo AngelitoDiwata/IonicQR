@@ -1,4 +1,4 @@
-import { IonButtons, IonContent, IonIcon, IonItem, IonLabel, IonList, IonNote, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButtons, IonContent, IonIcon, IonInput, IonItem, IonLabel, IonList, IonNote, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import './Home.css';
 import QRScanner from '../components/QRScanner';
 
@@ -11,6 +11,7 @@ const Scan = ({ onBack, settingData, data, triggerParent, currentUser }: any) =>
   const [location, setLocation] = useState(null)
   const [invalidScan, setInvalidScan] = useState(false)
   const [currentData, setCurrentData] = useState(data)
+  const [searchLocation, setSearchlocation] = useState('')
 
   const pushData = async (data: any) => {
     if (!checkValidQRCode(data.getText())) {
@@ -29,6 +30,12 @@ const Scan = ({ onBack, settingData, data, triggerParent, currentUser }: any) =>
       .reduce((data: any, acc: any) => data + acc)
   }
 
+  const filterLocationList = () => {
+    return settingData.locationList.filter((data: any) => {
+      return data.toLowerCase().includes(searchLocation.toLowerCase())
+    })
+  }
+
   return (
     !settingData.locationList ?
       <Settings settingData={settingData} onBack={() => onBack(currentData)} /> :
@@ -44,15 +51,20 @@ const Scan = ({ onBack, settingData, data, triggerParent, currentUser }: any) =>
             <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               <QRScanner invalidScan={invalidScan} handleScan={pushData} />
             </IonItem>
+
+            <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+              <IonInput value={searchLocation} onIonChange={(e) => setSearchlocation(e.detail.value! as never)} placeholder="Search for location" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonInput>
+            </IonItem>
+
             <IonList placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               {
-                settingData.locationList.map((location: any, key: any) =>
+                filterLocationList().length > 0 ? filterLocationList().map((location: any, key: any) =>
                 (<IonItem key={key} onClick={() => setLocation(location)} button={true} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                   <IonIcon color="danger" slot="start" icon={listCircle} size="large" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonIcon>
                   <IonLabel placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{location}</IonLabel>
                   <IonNote style={{ fontSize: '12px', fontWeight: 'bold' }} slot="end" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>data: {currentData[location] ? currentData[location].length : 0}</IonNote>
                   <IonNote style={{ fontSize: '12px', fontWeight: 'bold' }} slot="end" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Σ: {currentData[location] ? sigmaQty(currentData[location]) : 0}</IonNote>
-                </IonItem>))
+                </IonItem>)) : <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Wow, such empty 🤷🏻‍♂️</IonItem>
               }
             </IonList>
           </IonContent>
