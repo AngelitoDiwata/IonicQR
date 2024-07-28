@@ -156,6 +156,7 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
             <IonAlert
                 isOpen={batchAlert}
                 header="Please enter batch threshold"
+                onDidDismiss={() => setBatchAlert(false)}
                 inputs={[
                     {
                         name: 'batchCount',
