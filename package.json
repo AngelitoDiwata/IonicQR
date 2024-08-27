@@ -5,7 +5,7 @@
     "dependencies": {
         "@capacitor/app": "4.1.1",
         "@capacitor/core": "4.6.2",
-        "@capacitor/haptics": "4.1.0",
+        "@capacitor/haptics": "^4.1.0",
         "@capacitor/ios": "4.6.2",
         "@capacitor/keyboard": "4.1.1",
         "@capacitor/status-bar": "4.1.1",
@@ -26,6 +26,7 @@
         "history": "^4.9.0",
         "html-entities": "^2.5.2",
         "ionicons": "^6.0.3",
+        "json-2-csv": "^5.5.5",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-redux": "^9.1.2",

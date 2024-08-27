@@ -27,7 +27,7 @@ function Home() {
     useEffect(() => {
 
         getSettingData().then((res) => {
-            const condition = (loadState > 0 && (res.userList && res.locationList)) ? (res.userList.length === 0 || res.locationList.length === 0) : ((res.userList.length === 0 || res.locationList.length === 0) && isBacked)
+            const condition = (loadState > 0 && (res.userList)) ? (res.userList.length === 0) : ((res.userList.length === 0) && isBacked)
             setOnSetup(condition)
         })
 
@@ -38,7 +38,7 @@ function Home() {
 
     useEffect(() => {
         getSettingData().then((res) => {
-            if (res.userList && res.locationList) {
+            if (res.userList) {
                 setOnSetup(false)
             } else {
                 setOnSetup(true)

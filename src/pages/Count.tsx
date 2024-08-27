@@ -9,8 +9,6 @@ import { useEffect, useState } from 'react';
 const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
     const { addData, editQty, getData } = useStorage();
     const [currentData, setCurrentData] = useState(data)
-    const [isAlertOpen, setIsAlertOpen] = useState(false)
-    const [scanMsg, setScanMsg] = useState('')
     const [invalidScan, setInvalidScan] = useState(false)
     const [scanMode, setScanMode] = useState('single')
     const [batchAlert, setBatchAlert] = useState(false)
@@ -18,14 +16,13 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
     const [editIndex, setEditIndex] = useState(0)
     const [editAlert, setEditAlert] = useState(false)
     const [isEditSuccess, setIsEditSuccess] = useState(false)
-    const [dateScanned, setDateScanned] = useState(new Date().toLocaleDateString())
 
 
     const pushData = async (res: any) => {
         if (!checkValidQRCode(res.getText())) {
             setInvalidScan(true)
         }
-        else if (!isAlertOpen) {
+        else {
             if (scanMode === 'batch') {
                 setBatchAlert(true)
                 setBatchStash(res)
@@ -51,7 +48,6 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
         })
         setCurrentData(addData(saveArray, location, currentData))
         setBatchAlert(false)
-        setIsAlertOpen(true)
     }
 
     const handleEditAlertClose = (qty: number) => {
@@ -68,13 +64,10 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
     const saveData = (res: any, batch: boolean, curData: any) => {
         const newData = {
             scan_data: res.getText(),
-            created: new Date().getTime(),
+            created: `${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`,
             id: crypto.randomUUID(),
             scanned_by: currentUser.name
         }
-        setDateScanned(`${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`)
-        setScanMsg(res.getText());
-        !batch && setIsAlertOpen(true)
         setCurrentData(addData(newData, location, curData));
         triggerParent();
     }
@@ -138,14 +131,6 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
 
                 </IonGrid>
             </IonContent>
-            <IonAlert
-                isOpen={isAlertOpen}
-                header="Successful Scan"
-                subHeader={`${dateScanned}`}
-                message={scanMsg}
-                buttons={['Close']}
-                onDidDismiss={() => setIsAlertOpen(false)}
-            ></IonAlert>
 
             <IonAlert
                 isOpen={isEditSuccess}

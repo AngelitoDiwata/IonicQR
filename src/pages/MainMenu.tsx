@@ -7,6 +7,7 @@ import { useStorage } from '../hooks/useStorage';
 import Settings from './Settings';
 import { useDispatch } from 'react-redux';
 import { setCameraState } from "../store/reducers/DataSlice";
+import { json2csv } from 'json-2-csv';
 
 export default function MainMenu({ onLogOut, currentUser, bypass }: any) {
     const [repaint, setRepaint] = useState(false)
@@ -46,12 +47,27 @@ export default function MainMenu({ onLogOut, currentUser, bypass }: any) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedComponent])
 
+
     const postData = () => {
         if (data.length !== 0) {
-            const jsonString = JSON.stringify(sortDataBeforeExport(data), null, 2);
-            const blob = new Blob([jsonString], { type: 'application/json' });
+            const csvString = json2csv(
+                Object.keys(data).map((location) => {
+                    return sortDataBeforeExport(data)[location].map((item: any) => {
+                        return {
+                            created_date: item.created,
+                            prod_no: item.scan_data.split(';')[0],
+                            uom: item.scan_data.split(';')[1],
+                            jo_no: item.scan_data.split(';')[2],
+                            qty: item.scan_data.split(';')[3]
+                            , id: item.id, scanned_by: item.scanned_by, location
+                        }
+                    })
+                }).flat(),
+                { arrayIndexesAsKeys: true, expandArrayObjects: true }
+            );
+            const blob = new Blob([csvString], { type: 'text/csv' });
             const link = window.document.createElement('a');
-            link.download = `${new Date().toDateString()}_extract.json`;
+            link.download = `${new Date().toDateString()}_extract.csv`;
             link.href = window.URL.createObjectURL(blob);
             window.document.body.appendChild(link);
             link.click();

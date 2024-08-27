@@ -6,18 +6,13 @@ import { useEffect, useState } from "react";
 export default function Settings({ onBack, settingData, onSetup }: any) {
 
     const { setAppSetting } = useStorage();
-    const [currentLocation, setCurrentLocation] = useState();
-    const [editKey, setEditKey] = useState();
-    const [locationList, setLocationList] = useState(settingData.locationList);
 
     const [currentUser, setCurrentUser] = useState();
     const [userType, setUserType] = useState();
     const [userEditKey, setUserEditKey] = useState();
     const [userList, setUserList] = useState(settingData.userList);
 
-    const [isAlertOpen, setIsAlertOpen] = useState(false);
     const [isUserAlertOpen, setIsUserAlertOpen] = useState(false)
-    const [isErrorAlertOpen, setIsErrorAlertOpen] = useState(false);
     const [isUserErrorAlertOpen, setIsUserErrorAlertOpen] = useState(false)
     const [isEmptyAlertOpen, setIsEmptyAlertOpen] = useState(false);
     const [backDisabled, setBackDisabled] = useState(onSetup)
@@ -25,22 +20,7 @@ export default function Settings({ onBack, settingData, onSetup }: any) {
     const assembleAppSetting = () => {
         setBackDisabled(false)
         return {
-            locationList,
             userList
-        }
-    }
-    const addToLocationList = () => {
-        if (currentLocation && (currentLocation as string).trim() !== '') {
-            if (locationList !== undefined && checkDuplicates(locationList, currentLocation)) {
-                setIsErrorAlertOpen(true)
-            }
-            else if (editKey !== undefined) {
-                editLocationList()
-            } else {
-                const currentList = locationList || []
-                setLocationList([...currentList, currentLocation as never])
-                setIsAlertOpen(true)
-            }
         }
     }
 
@@ -58,27 +38,12 @@ export default function Settings({ onBack, settingData, onSetup }: any) {
             }
         }
     }
-    const closeSuccessAlert = () => {
-        setIsAlertOpen(false)
-        setCurrentLocation(undefined)
-    }
+
     const closeUserSuccessAlert = () => {
         setIsUserAlertOpen(false)
         setCurrentUser(undefined)
     }
-    const editLocationList = () => {
-        if (locationList !== undefined && checkDuplicates(locationList, currentLocation)) {
-            setIsErrorAlertOpen(true)
-        }
-        else if (editKey !== undefined) {
-            const newLocationList = [...locationList];
-            newLocationList[editKey] = currentLocation;
-            setLocationList(newLocationList)
-            setIsAlertOpen(true)
-            setEditKey(undefined)
-            setCurrentLocation(undefined)
-        }
-    }
+
 
     const editUserList = () => {
         if (userList !== undefined && checkDuplicates(userList, currentUser)) {
@@ -99,21 +64,15 @@ export default function Settings({ onBack, settingData, onSetup }: any) {
         return array.includes(value)
     }
 
-    const deleteFromLocationList = (key: number) => {
-        const newLocationList = [...locationList];
-        newLocationList.splice(key, 1);
-        setLocationList(newLocationList)
-    }
-
     const deleteFromUserList = (key: number) => {
         const newUserList = [...userList];
         newUserList.splice(key, 1);
-        setLocationList(newUserList)
+        setUserList(newUserList)
     }
 
     const validateDataBeforeSave = () => {
-        if (locationList && userList) {
-            if (locationList.length === 0 || userList.length === 0) {
+        if (userList) {
+            if (userList.length === 0) {
                 setIsEmptyAlertOpen(true)
             } else {
                 setAppSetting(assembleAppSetting())
@@ -121,21 +80,14 @@ export default function Settings({ onBack, settingData, onSetup }: any) {
 
             onSetup && onBack(false, true)
         } else {
-            alert('Please save Location or User before proceeding')
+            alert('Please save Users before proceeding')
         }
     }
 
     useEffect(() => {
-        (userList && locationList && !onSetup) && validateDataBeforeSave()
+        (userList && !onSetup) && validateDataBeforeSave()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userList, locationList])
-
-    useEffect(() => {
-        if (editKey !== undefined) {
-            setCurrentLocation(locationList[editKey])
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [editKey])
+    }, [userList])
 
     useEffect(() => {
         if (userEditKey !== undefined) {
@@ -156,31 +108,6 @@ export default function Settings({ onBack, settingData, onSetup }: any) {
                 <IonTitle placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{onSetup ? 'Initial Setup' : 'Settings'}</IonTitle>
             </IonToolbar>
             <IonContent className="ion-padding" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-
-                <h4>List of Warehouse Locations: </h4>
-                <IonItemDivider placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                    <IonInput value={currentLocation} onIonChange={(e) => setCurrentLocation(e.detail.value! as never)} placeholder="Enter Location/Lot No:" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonInput>
-                    <IonButton onClick={addToLocationList} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{editKey !== undefined ? 'Update' : 'Add'}</IonButton>
-                </IonItemDivider>
-                <IonList style={{ overflow: 'scroll', height: '40%' }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                    {
-                        (locationList && locationList.length > 0) && locationList.map((res: any, key: any) => {
-                            return (
-                                <IonItemSliding key={key} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                                    <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                                        <IonLabel placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{res}</IonLabel>
-                                    </IonItem>
-
-                                    <IonItemOptions placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                                        <IonItemOption onClick={() => setEditKey(key)} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Edit</IonItemOption>
-                                        <IonItemOption onClick={() => deleteFromLocationList(key)} color="danger" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Delete</IonItemOption>
-                                    </IonItemOptions>
-                                </IonItemSliding>
-                            )
-                        })
-                    }
-
-                </IonList>
 
                 <h4>List of users: </h4>
                 <IonItemDivider placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
@@ -224,13 +151,6 @@ export default function Settings({ onBack, settingData, onSetup }: any) {
                     </IonToolbar>
                 </IonFooter>
             }
-            <IonAlert
-                isOpen={isAlertOpen}
-                header={`Successfully ${editKey !== undefined ? 'updated' : 'added'} location`}
-                subHeader={`Data saved: ${currentLocation}`}
-                buttons={['Close']}
-                onDidDismiss={() => closeSuccessAlert()}
-            ></IonAlert>
 
             <IonAlert
                 isOpen={isUserAlertOpen}
@@ -240,13 +160,6 @@ export default function Settings({ onBack, settingData, onSetup }: any) {
                 onDidDismiss={() => closeUserSuccessAlert()}
             ></IonAlert>
 
-            <IonAlert
-                isOpen={isErrorAlertOpen}
-                header="Location already exist!"
-                subHeader="Kindly save a new location name"
-                buttons={['Okay']}
-                onDidDismiss={() => setIsErrorAlertOpen(false)}
-            ></IonAlert>
 
             <IonAlert
                 isOpen={isUserErrorAlertOpen}
@@ -258,8 +171,8 @@ export default function Settings({ onBack, settingData, onSetup }: any) {
 
             <IonAlert
                 isOpen={isEmptyAlertOpen}
-                header="Please input locations/users"
-                subHeader="Cannot proceed without set of locations/users"
+                header="Please input users"
+                subHeader="Cannot proceed without set of users"
                 buttons={['Okay']}
                 onDidDismiss={() => { setIsEmptyAlertOpen(false) }}
             ></IonAlert>
