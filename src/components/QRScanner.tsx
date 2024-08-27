@@ -15,7 +15,7 @@ export default function QRScanner({ handleScan, invalidScan }: any) {
     const { ref } = useZxing({
         onDecodeResult(result) {
             if (result && isScanMode) {
-                const audio = new Audio(require("beep.mp3"));
+                const audio = new Audio(require("./beep.mp3"));
                 audio.play();
                 handleScan(result)
                 setIsScanMode(false)
