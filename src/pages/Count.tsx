@@ -73,11 +73,13 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
     }
 
     const checkValidQRCode = (code: string) => {
-        return code.split(';').length === 4
+        return code.split(';').length === 4 || code.split(';').length === 3
     }
 
+
     const lastValueSwitcher = (arr: any[]) => {
-        return [arr[0], arr[2], arr[3], arr[1]]
+        const oldFormat = arr[3] === undefined
+        return [arr[0], oldFormat ? '' : arr[2], arr[oldFormat ? 2 : 3], arr[1]]
     }
 
     useEffect(() => {
@@ -123,7 +125,7 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
                         sortedData && sortedData.map((todo: any, key: any) => (
                             <IonRow onClick={() => { setEditIndex(todo.id); setEditAlert(true) }} key={key} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                                 {
-                                    lastValueSwitcher(todo.scan_data.split(";")).map((item: any, key2: any) => <IonCol style={{ paddingTop: '10px', paddingBottom: '10px' }} key={key2} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{item}</IonCol>)
+                                    lastValueSwitcher(todo.scan_data.split(";")).map((item: any, key2: any) => <IonCol style={{ paddingTop: '10px', paddingBottom: '10px', width: '25%' }} key={key2} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{item}</IonCol>)
                                 }
                             </IonRow>
                         ))

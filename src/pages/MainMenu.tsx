@@ -47,7 +47,6 @@ export default function MainMenu({ onLogOut, currentUser, bypass }: any) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedComponent])
 
-
     const postData = () => {
         if (data.length !== 0) {
             const csvString = json2csv(
@@ -56,10 +55,10 @@ export default function MainMenu({ onLogOut, currentUser, bypass }: any) {
                         return {
                             created_date: item.created,
                             prod_no: item.scan_data.split(';')[0],
-                            uom: item.scan_data.split(';')[1],
-                            jo_no: item.scan_data.split(';')[2],
-                            qty: item.scan_data.split(';')[3]
-                            , id: item.id, scanned_by: item.scanned_by, location
+                            uom: item.scan_data.split(';')[3] === undefined ? '' : item.scan_data.split(';')[2],
+                            jo_no: item.scan_data.split(';')[item.scan_data.split(';')[3] === undefined ? 2 : 3],
+                            qty: item.scan_data.split(';')[1],
+                            id: item.id, scanned_by: item.scanned_by, location
                         }
                     })
                 }).flat(),
