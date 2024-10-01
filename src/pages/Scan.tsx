@@ -1,4 +1,4 @@
-import { IonAlert, IonButtons, IonContent, IonIcon, IonItem, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonAlert, IonButtons, IonContent, IonIcon, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import './Home.css';
 import QRScanner from '../components/QRScanner';
 

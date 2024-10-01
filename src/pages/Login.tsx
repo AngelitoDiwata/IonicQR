@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import QRScanner from '../components/QRScanner'
-import { IonAlert, IonButtons, IonContent, IonIcon, IonItem, IonPage, IonTitle, IonToolbar } from '@ionic/react'
+import { IonAlert, IonButtons, IonContent, IonIcon, IonPage, IonTitle, IonToolbar } from '@ionic/react'
 import { useStorage } from '../hooks/useStorage';
 import MainMenu from './MainMenu';
 import Cookies from 'js-cookie';
