@@ -18,6 +18,7 @@ const Scan = ({ onBack, settingData, data, triggerParent, currentUser }: any) =>
     } else {
       await setLocation(data.getText());
     }
+    setInvalidScan(false)
   }
 
   const checkValidQRCode = (code: string) => {
