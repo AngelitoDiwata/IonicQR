@@ -1,7 +1,7 @@
 import { IonAlert } from "@ionic/react";
-import { LegacyRef, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-export default function QRScanner({ handleScan, invalidScan, focus, async }: any) {
+export default function QRScanner({ handleScan, invalidScan, focus }: any) {
     const [isAlertOpen, setIsAlertOpen] = useState(false);
     const [scanMsg, setScanMsg] = useState("");
     const inputRef = useRef<any>(null);
