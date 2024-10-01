@@ -13,6 +13,7 @@ export default function Login({ onLogout }: any) {
     const [isAlertOpen, setIsAlertOpen] = useState(false);
     const [currentUser, setCurrentUser] = useState({ name: '', type: '' });
     const [isBypass, setIsBypass] = useState(false)
+    const [focus, setFocus] = useState(false)
 
     const handleLoginScan = (data: any) => {
         setUserLoggedIn(true)
@@ -53,7 +54,7 @@ export default function Login({ onLogout }: any) {
                     </IonToolbar>
                     <IonContent fullscreen placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                         <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                            <QRScanner paused={isBypass} handleScan={handleLoginScan} />
+                            <QRScanner paused={isBypass} handleScan={handleLoginScan} focus={focus} />
                         </IonItem>
                     </IonContent>
                 </IonPage> : <MainMenu bypass={isBypass} currentUser={currentUser} onLogOut={() => onLogout(false)} />

@@ -16,6 +16,7 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
     const [editIndex, setEditIndex] = useState(0)
     const [editAlert, setEditAlert] = useState(false)
     const [isEditSuccess, setIsEditSuccess] = useState(false)
+    const [focus, setFocus] = useState(true)
 
 
     const pushData = async (res: any) => {
@@ -23,6 +24,7 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
             setInvalidScan(true)
         }
         else {
+            setInvalidScan(false)
             if (scanMode === 'batch') {
                 setBatchAlert(true)
                 setBatchStash(res)
@@ -88,7 +90,7 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    const sortedData: any = currentData[location] ? [...currentData[location]].sort((a: any, b: any) => b.created - a.created) : [];
+    const sortedData: any = currentData[location] ? [...currentData[location]].sort((a: any, b: any) => a.created - b.created).reverse() : [];
 
 
 
@@ -111,7 +113,7 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
                 </IonSegment>
 
                 <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                    <QRScanner invalidScan={invalidScan} handleScan={pushData} />
+                    <QRScanner invalidScan={invalidScan} handleScan={pushData} focus={focus} />
                 </IonItem>
 
                 <IonGrid style={{ overflow: 'scroll', height: '50%' }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
@@ -143,7 +145,8 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
             <IonAlert
                 isOpen={batchAlert}
                 header="Please enter batch threshold"
-                onDidDismiss={() => setBatchAlert(false)}
+                onDidDismiss={() => { setBatchAlert(false); setFocus(true) }}
+                onDidPresent={() => setFocus(false)}
                 inputs={[
                     {
                         name: 'batchCount',
@@ -164,7 +167,8 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
             <IonAlert
                 isOpen={editAlert}
                 header="Edit Quantity"
-                onDidDismiss={() => setEditAlert(false)}
+                onDidDismiss={() => { setEditAlert(false); setFocus(true) }}
+                onDidPresent={() => setFocus(false)}
                 inputs={[
                     {
                         name: 'itemQty',

@@ -37,7 +37,7 @@ const Scan = ({ onBack, settingData, data, triggerParent, currentUser }: any) =>
           </IonToolbar>
           <IonContent className="ion-padding" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
             <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-              <QRScanner invalidScan={invalidScan} handleScan={pushData} />
+              <QRScanner invalidScan={invalidScan} handleScan={pushData} focus={true} />
             </IonItem>
           </IonContent>
         </IonPage> : <Count currentUser={currentUser} triggerParent={triggerParent} data={currentData} onBack={(data: any) => { setCurrentData(data); setInvalidScan(false); setLocation(null) }} location={location} />
