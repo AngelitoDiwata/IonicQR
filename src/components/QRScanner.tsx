@@ -1,9 +1,6 @@
-import { IonAlert } from "@ionic/react";
 import { useEffect, useRef, useState } from "react";
 
-export default function QRScanner({ handleScan, invalidScan, focus }: any) {
-    const [isAlertOpen, setIsAlertOpen] = useState(false);
-    const [scanMsg, setScanMsg] = useState("");
+export default function QRScanner({ handleScan, focus }: any) {
     const inputRef = useRef<any>(null);
     const [code, setCode] = useState("");
 
@@ -61,12 +58,6 @@ export default function QRScanner({ handleScan, invalidScan, focus }: any) {
                     e.preventDefault();
                 }
             }}></textarea>
-            <IonAlert
-                isOpen={isAlertOpen}
-                header={scanMsg}
-                buttons={['Close']}
-                onDidDismiss={() => setIsAlertOpen(false)}
-            ></IonAlert>
         </div >
     )
 }
