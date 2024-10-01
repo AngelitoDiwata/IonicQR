@@ -51,9 +51,8 @@ export default function Login({ onLogout }: any) {
                         <IonTitle placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>User Login</IonTitle>
                     </IonToolbar>
                     <IonContent fullscreen placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                        <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                            <QRScanner paused={isBypass} handleScan={handleLoginScan} focus={true} />
-                        </IonItem>
+
+                        <QRScanner paused={isBypass} handleScan={handleLoginScan} focus={true} />
                         <div style={{
                             display: 'flex',
                             alignItems: 'center',

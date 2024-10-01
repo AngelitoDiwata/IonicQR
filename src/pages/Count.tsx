@@ -112,10 +112,7 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
                             <IonLabel placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Batch</IonLabel>
                         </IonSegmentButton>
                     </IonSegment>
-
-                    <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                        <QRScanner handleScan={pushData} focus={focus} />
-                    </IonItem>
+                    <QRScanner handleScan={pushData} focus={focus} />
 
                     <IonGrid style={{ overflow: 'scroll', height: '50%' }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
 

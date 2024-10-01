@@ -38,9 +38,7 @@ const Scan = ({ onBack, settingData, data, triggerParent, currentUser }: any) =>
               <IonTitle placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Scan Location/Lot#</IonTitle>
             </IonToolbar>
             <IonContent className="ion-padding" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-              <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                <QRScanner handleScan={pushData} focus={true} />
-              </IonItem>
+              <QRScanner handleScan={pushData} focus={true} />
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
