@@ -20,7 +20,7 @@ export default function QRScanner({ handleScan, invalidScan, focus }: any) {
                 setCode("")
             })
         }
-    }, [code])
+    }, [code, handleScan])
 
     useEffect(() => {
         if (inputRef.current && focus) {
