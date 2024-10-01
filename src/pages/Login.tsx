@@ -53,7 +53,7 @@ export default function Login({ onLogout }: any) {
                     </IonToolbar>
                     <IonContent fullscreen placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                         <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                            <QRScanner paused={isBypass} handleScan={handleLoginScan} focus={false} />
+                            <QRScanner paused={isBypass} handleScan={handleLoginScan} focus={true} />
                         </IonItem>
                     </IonContent>
                 </IonPage> : <MainMenu bypass={isBypass} currentUser={currentUser} onLogOut={() => onLogout(false)} />
