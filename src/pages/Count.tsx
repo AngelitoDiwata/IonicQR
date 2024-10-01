@@ -112,6 +112,31 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
                             <IonLabel placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Batch</IonLabel>
                         </IonSegmentButton>
                     </IonSegment>
+                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'Center', paddingTop: '10px', width: '100%' }}>
+                        <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "Center", width: "80%" }}>
+
+                            <span>
+                                Current Scan Count:
+                            </span>
+                            <span style={{ fontSize: "30px", color: "#DAF7A6" }}>
+                                {sortedData.length}
+                            </span>
+
+                        </div>
+                        <br></br>
+                        <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "Center", width: "80%" }}>
+                            <span>
+                                Current Quantity Count:
+                            </span>
+                            {
+                                <span style={{ fontSize: "30px", color: "#ffbf00" }}>{sortedData.map((data: any) => parseInt(lastValueSwitcher(data.scan_data.split(";"))[3])).reduce(
+                                    (accumulator: number, currentValue: number) => accumulator + currentValue,
+                                    0,
+                                )}</span>
+                            }
+                        </div>
+
+                    </div>
                     <QRScanner handleScan={pushData} focus={focus} />
 
                     <IonGrid style={{ overflow: 'scroll', height: '50%' }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
