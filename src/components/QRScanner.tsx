@@ -17,10 +17,11 @@ export default function QRScanner({ handleScan, invalidScan, focus }: any) {
                 }
             })?.then(() => {
 
-                setCode("")
+                setCode(() => "")
             })
         }
-    }, [code, handleScan])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [code])
 
     useEffect(() => {
         if (inputRef.current && focus) {
