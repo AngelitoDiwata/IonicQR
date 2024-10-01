@@ -10,13 +10,11 @@ export default function QRScanner({ handleScan, invalidScan, focus }: any) {
     useEffect(() => {
         // Check if code contains CR LF
         if (code.includes('\n')) {
-            setIsAlertOpen(false)
             handleScan({
                 getText: () => {
                     return code.trim()
                 }
             })?.then(() => {
-
                 setCode(() => "")
             })
         }
@@ -51,12 +49,8 @@ export default function QRScanner({ handleScan, invalidScan, focus }: any) {
         if (inputRef.current) {
             inputRef.current.focus();
         }
-        if (invalidScan) {
-            setIsAlertOpen(true)
-            setScanMsg('Please scan a valid QR code')
-        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [invalidScan])
+    })
 
 
     return (

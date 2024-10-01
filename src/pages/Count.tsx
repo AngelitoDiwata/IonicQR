@@ -95,99 +95,107 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
 
 
     return (
-        <IonPage placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-            <IonToolbar placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                <IonButtons onClick={() => onBack(currentData)} slot="start" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                    <IonIcon className="ion-padding" size="medium" icon={arrowBack} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonIcon>
-                </IonButtons>
-                <IonTitle placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Location/Lot#: {location}</IonTitle>
-            </IonToolbar>
-            <IonContent className="ion-padding" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                <IonSegment value={scanMode} onIonChange={(val) => setScanMode(val.detail.value as any)} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                    <IonSegmentButton value="single" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                        <IonLabel placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Single</IonLabel>
-                    </IonSegmentButton>
-                    <IonSegmentButton value="batch" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                        <IonLabel placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Batch</IonLabel>
-                    </IonSegmentButton>
-                </IonSegment>
+        <>
+            <IonPage placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                <IonToolbar placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    <IonButtons onClick={() => onBack(currentData)} slot="start" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                        <IonIcon className="ion-padding" size="medium" icon={arrowBack} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonIcon>
+                    </IonButtons>
+                    <IonTitle placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Location/Lot#: {location}</IonTitle>
+                </IonToolbar>
+                <IonContent className="ion-padding" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    <IonSegment value={scanMode} onIonChange={(val) => setScanMode(val.detail.value as any)} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                        <IonSegmentButton value="single" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                            <IonLabel placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Single</IonLabel>
+                        </IonSegmentButton>
+                        <IonSegmentButton value="batch" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                            <IonLabel placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Batch</IonLabel>
+                        </IonSegmentButton>
+                    </IonSegment>
 
-                <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                    <QRScanner invalidScan={invalidScan} handleScan={pushData} focus={focus} />
-                </IonItem>
+                    <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                        <QRScanner handleScan={pushData} focus={focus} />
+                    </IonItem>
 
-                <IonGrid style={{ overflow: 'scroll', height: '50%' }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    <IonGrid style={{ overflow: 'scroll', height: '50%' }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
 
-                    <IonRow style={{ top: '0', zIndex: 20, position: 'sticky', backgroundColor: 'white', color: 'black', borderRadius: '5px', boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)' }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                        <IonRow style={{ top: '0', zIndex: 20, position: 'sticky', backgroundColor: 'white', color: 'black', borderRadius: '5px', boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)' }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                            {
+                                ['PRDCODE', 'UOM', 'JO_NO', 'QTY'].map((item: any, key: any) => (<IonCol style={{ fontWeight: 'bold' }} key={key} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{item}</IonCol>))
+                            }
+                        </IonRow>
                         {
-                            ['PRDCODE', 'UOM', 'JO_NO', 'QTY'].map((item: any, key: any) => (<IonCol style={{ fontWeight: 'bold' }} key={key} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{item}</IonCol>))
+                            sortedData && sortedData.map((todo: any, key: any) => (
+                                <IonRow onClick={() => { setEditIndex(todo.id); setEditAlert(true) }} key={key} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                                    {
+                                        lastValueSwitcher(todo.scan_data.split(";")).map((item: any, key2: any) => <IonCol style={{ paddingTop: '10px', paddingBottom: '10px', width: '25%' }} key={key2} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{item}</IonCol>)
+                                    }
+                                </IonRow>
+                            ))
                         }
-                    </IonRow>
-                    {
-                        sortedData && sortedData.map((todo: any, key: any) => (
-                            <IonRow onClick={() => { setEditIndex(todo.id); setEditAlert(true) }} key={key} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                                {
-                                    lastValueSwitcher(todo.scan_data.split(";")).map((item: any, key2: any) => <IonCol style={{ paddingTop: '10px', paddingBottom: '10px', width: '25%' }} key={key2} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{item}</IonCol>)
-                                }
-                            </IonRow>
-                        ))
+
+                    </IonGrid>
+                </IonContent>
+
+                <IonAlert
+                    isOpen={isEditSuccess}
+                    header="Successfully edited quantity"
+                    buttons={['Close']}
+                    onDidDismiss={() => setIsEditSuccess(false)}
+                ></IonAlert>
+                <IonAlert
+                    isOpen={batchAlert}
+                    header="Please enter batch threshold"
+                    onDidDismiss={() => { setBatchAlert(false); setFocus(true) }}
+                    onDidPresent={() => setFocus(false)}
+                    inputs={[
+                        {
+                            name: 'batchCount',
+                            type: 'number',
+                            placeholder: 'Batch count'
+                        }
+                    ]}
+                    buttons={
+                        [{
+                            text: 'Save',
+                            handler: (alertData) => { //takes the data 
+                                handleBatchAlertClose(alertData.batchCount);
+                            }
+                        }]
                     }
+                ></IonAlert>
 
-                </IonGrid>
-            </IonContent>
+                <IonAlert
+                    isOpen={editAlert}
+                    header="Edit Quantity"
+                    onDidDismiss={() => { setEditAlert(false); setFocus(true) }}
+                    onDidPresent={() => setFocus(false)}
+                    inputs={[
+                        {
+                            name: 'itemQty',
+                            type: 'number',
+                            placeholder: 'Enter new quantity'
+                        }
+                    ]}
+                    buttons={
+                        [{
+                            text: 'Save',
+                            handler: (alertData) => { //takes the data 
+                                handleEditAlertClose(alertData.itemQty);
+                            }
+                        }]
+                    }
+                ></IonAlert>
 
+
+            </IonPage>
             <IonAlert
-                isOpen={isEditSuccess}
-                header="Successfully edited quantity"
+                isOpen={invalidScan}
+                header={'Unknown product code. Please try a valid one'}
                 buttons={['Close']}
-                onDidDismiss={() => setIsEditSuccess(false)}
+                onDidDismiss={() => setInvalidScan(false)}
             ></IonAlert>
-            <IonAlert
-                isOpen={batchAlert}
-                header="Please enter batch threshold"
-                onDidDismiss={() => { setBatchAlert(false); setFocus(true) }}
-                onDidPresent={() => setFocus(false)}
-                inputs={[
-                    {
-                        name: 'batchCount',
-                        type: 'number',
-                        placeholder: 'Batch count'
-                    }
-                ]}
-                buttons={
-                    [{
-                        text: 'Save',
-                        handler: (alertData) => { //takes the data 
-                            handleBatchAlertClose(alertData.batchCount);
-                        }
-                    }]
-                }
-            ></IonAlert>
-
-            <IonAlert
-                isOpen={editAlert}
-                header="Edit Quantity"
-                onDidDismiss={() => { setEditAlert(false); setFocus(true) }}
-                onDidPresent={() => setFocus(false)}
-                inputs={[
-                    {
-                        name: 'itemQty',
-                        type: 'number',
-                        placeholder: 'Enter new quantity'
-                    }
-                ]}
-                buttons={
-                    [{
-                        text: 'Save',
-                        handler: (alertData) => { //takes the data 
-                            handleEditAlertClose(alertData.itemQty);
-                        }
-                    }]
-                }
-            ></IonAlert>
-
-
-        </IonPage>
+        </>
     );
 };
 

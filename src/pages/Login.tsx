@@ -14,8 +14,7 @@ export default function Login({ onLogout }: any) {
     const [currentUser, setCurrentUser] = useState({ name: '', type: '' });
     const [isBypass, setIsBypass] = useState(false)
 
-    const handleLoginScan = (data: any) => {
-        setUserLoggedIn(true)
+    const handleLoginScan = async (data: any) => {
         checkUserExistence(data.getText()).then((res) => {
             if (res.length > 0) {
                 setUserLoggedIn(true)
@@ -55,6 +54,54 @@ export default function Login({ onLogout }: any) {
                         <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                             <QRScanner paused={isBypass} handleScan={handleLoginScan} focus={true} />
                         </IonItem>
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            minHeight: 'auto',
+                        }}>
+                            <div style={{
+                                width: '100%',
+                                maxWidth: '320px',
+                                padding: '24px',
+                                backgroundColor: 'white',
+                                borderRadius: '8px',
+                                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+                            }}>
+                                <div style={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    marginBottom: '32px'
+                                }}>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="64"
+                                        height="64"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    >
+                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                        <rect x="7" y="7" width="3" height="3"></rect>
+                                        <rect x="14" y="7" width="3" height="3"></rect>
+                                        <rect x="7" y="14" width="3" height="3"></rect>
+                                        <rect x="14" y="14" width="3" height="3"></rect>
+                                    </svg>
+                                </div>
+                                <h1 style={{
+                                    marginBottom: '24px',
+                                    fontSize: '24px',
+                                    fontWeight: 300,
+                                    textAlign: 'center',
+                                    color: '#1f2937'
+                                }}>
+                                    Please scan your user QR code
+                                </h1>
+                            </div>
+                        </div>
                     </IonContent>
                 </IonPage> : <MainMenu bypass={isBypass} currentUser={currentUser} onLogOut={() => onLogout(false)} />
         }
