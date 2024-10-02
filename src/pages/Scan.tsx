@@ -3,14 +3,15 @@ import './Home.css';
 import QRScanner from '../components/QRScanner';
 
 import { arrowBack } from 'ionicons/icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Count from './Count';
 import Settings from './Settings';
 
-const Scan = ({ onBack, settingData, data, triggerParent, currentUser }: any) => {
+const Scan = ({ onBack, settingData, data, triggerParent, currentUser, isCurrent }: any) => {
   const [location, setLocation] = useState(null)
   const [invalidScan, setInvalidScan] = useState(false)
   const [currentData, setCurrentData] = useState(data)
+  const [isFocused, setIsFocused] = useState(false)
 
   const pushData = async (data: any) => {
     setInvalidScan(false)
@@ -25,6 +26,10 @@ const Scan = ({ onBack, settingData, data, triggerParent, currentUser }: any) =>
     return code.split('')[0] === '!' && code.split('')[1] === '@'
   }
 
+  useEffect(() => {
+    setIsFocused(() => isCurrent)
+  }, [isCurrent])
+
   return (
     <>
       {!settingData.userList ?
@@ -38,7 +43,7 @@ const Scan = ({ onBack, settingData, data, triggerParent, currentUser }: any) =>
               <IonTitle placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Scan Location/Lot#</IonTitle>
             </IonToolbar>
             <IonContent className="ion-padding" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-              <QRScanner handleScan={pushData} focus={true} />
+              <QRScanner handleScan={pushData} focus={isFocused} />
               <div style={{
                 display: 'flex',
                 alignItems: 'center',

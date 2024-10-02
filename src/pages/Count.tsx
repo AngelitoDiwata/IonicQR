@@ -93,7 +93,6 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
     const sortedData: any = currentData[location] ? [...currentData[location]].sort((a: any, b: any) => a.created - b.created).reverse() : [];
 
 
-
     return (
         <>
             <IonPage placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
@@ -180,7 +179,7 @@ const Count = ({ onBack, location, data, triggerParent, currentUser }: any) => {
                     buttons={
                         [{
                             text: 'Save',
-                            handler: (alertData) => { //takes the data 
+                            handler: (alertData) => { //takes the data
                                 handleBatchAlertClose(alertData.batchCount);
                             }
                         }]

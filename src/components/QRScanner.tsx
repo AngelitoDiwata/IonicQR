@@ -38,6 +38,7 @@ export default function QRScanner({ handleScan, focus }: any) {
             };
         }
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
 
     }, [focus])
 
@@ -46,7 +47,6 @@ export default function QRScanner({ handleScan, focus }: any) {
         if (inputRef.current) {
             inputRef.current.focus();
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     })
 
 

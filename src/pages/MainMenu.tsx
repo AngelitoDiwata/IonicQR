@@ -11,41 +11,21 @@ import { json2csv } from 'json-2-csv';
 
 export default function MainMenu({ onLogOut, currentUser, bypass }: any) {
     const [repaint, setRepaint] = useState(false)
-    const { data, clearData, settingData, store, SETTINGS_KEY } = useStorage();
+    const { data, clearData, settingData } = useStorage();
     const [currentData, setCurrentData] = useState()
     const [selectedComponent, setSelectedComponent] = useState('')
     const [camPaused, setCampaused] = useState(bypass)
     const dispatch = useDispatch();
     let components: { [key: string]: any } = {
-        "Scan": <Scan currentUser={currentUser} triggerParent={() => setRepaint(!repaint)} data={currentData || data} settingData={settingData} onBack={(res: any) => { setCurrentData(res); setCampaused(true); setSelectedComponent('') }} />,
+        "Scan": <Scan currentUser={currentUser} isCurrent={selectedComponent === "Scan"} triggerParent={() => selectedComponent === "Scan" && setRepaint(!repaint)} data={currentData || data} settingData={settingData} onBack={(res: any) => { setCurrentData(res); setCampaused(true); setSelectedComponent('') }} />,
         "Login": <Login />,
         "Settings": <Settings settingData={settingData} onBack={() => setSelectedComponent('')} />
     }
-
-    const [currentComponent, setCurrentComponent] = useState(components[selectedComponent])
 
     useEffect(() => {
         dispatch(setCameraState(camPaused))
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [camPaused])
-
-    useEffect(() => {
-        setCampaused(false)
-        if (selectedComponent === 'Settings') {
-            getSettings().then((res) => {
-                setCurrentComponent(<Settings settingData={res} onBack={() => { setCampaused(true); setSelectedComponent('') }} />)
-            })
-        } else if (selectedComponent === 'Scan') {
-            getSettings().then((res) => {
-                setCampaused(false)
-                setCurrentComponent(<Scan currentUser={currentUser} triggerParent={() => setRepaint(!repaint)} data={currentData || data} settingData={res} onBack={(res: any) => { setCurrentData(res); setCampaused(true); setSelectedComponent('') }} />)
-            })
-        } else {
-            setCurrentComponent(components[selectedComponent])
-        }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedComponent])
 
     const postData = () => {
         if (data.length !== 0) {
@@ -93,14 +73,6 @@ export default function MainMenu({ onLogOut, currentUser, bypass }: any) {
         return newData
     }
 
-
-    const getSettings = async () => {
-        const settings = await store?.get(SETTINGS_KEY) || [];
-        return settings
-    }
-
-
-
     return (
         (
             <IonContent className="ion-padding" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
@@ -128,7 +100,7 @@ export default function MainMenu({ onLogOut, currentUser, bypass }: any) {
                     <IonIcon slot='start' icon={power} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}></IonIcon> Log out
                 </IonButton>
                 {
-                    selectedComponent !== '' && currentComponent
+                    selectedComponent !== '' && components[selectedComponent]
                 }
             </IonContent>
         )
